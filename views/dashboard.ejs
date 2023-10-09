@@ -28,10 +28,14 @@
     integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
     crossorigin="anonymous"></script>
 
-
+  <!-- Agrega jQuery (asegúrate de incluirlo antes de este script) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
-      background: url(https://cdn.pixabay.com/photo/2022/06/24/13/57/woman-7281733_960_720.jpg);
+      background: url(https://www.grupocoprodumat.com/wp-content/uploads/2021/09/1de10cf4-854d-444b-83fa-70c22893aa4a-1.jpg);
+      background-repeat: no-repeat;
+      background-repeat: repeat-x;
+      background-size: auto;
       /* background-repeat: no-repeat; */
       /* background-size: cover; */
     }
@@ -90,7 +94,7 @@
 
 </head>
 
-<body>
+<body >
   <!-- Barra de navegación -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
@@ -155,8 +159,7 @@
 
 </body>
 
-<!-- Agrega jQuery (asegúrate de incluirlo antes de este script) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <script>
   $(document).ready(function () {
@@ -214,6 +217,7 @@
 
         // Crear un objeto JSON vacío
         var formData = {};
+        var formClass = $("#formulario").attr("class");
 
         // Recorrer los campos del formulario
         $(this).find(":input").each(function () {
@@ -228,6 +232,21 @@
 
         // Imprimir el objeto JSON en la consola
         console.log(formData);
+
+        $.ajax({
+          url: `https://unihorariosapi.onrender.com/api/${formClass}/create`,
+          method: 'POST',
+          data: JSON.stringify(formData), 
+          contentType: 'application/json', 
+          success: function (response) {
+       
+            console.log('Solicitud exitosa:', response);
+          },
+          error: function (error) {
+           
+            console.error('Error en la solicitud:', error);
+          }
+        });
       });
 
 
