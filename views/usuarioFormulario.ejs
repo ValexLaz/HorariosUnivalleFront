@@ -1,0 +1,40 @@
+<form action="/agregar-usuario" method="POST">
+    <!-- Campos del formulario -->
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="last_name" class="form-label">Apellido</label>
+        <input type="text" class="form-control" id="last_name" name="last_name" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Correo Electrónico</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <div class="mb-3">
+        <label for="users_type_id" class="form-label">Tipo de Usuario</label>
+        <!-- Agrega un select para seleccionar el tipo de usuario -->
+        <select class="form-select" id="users_type_id" name="users_type_id" required>
+            <!-- Opciones del select -->
+            <option value="tipo1">Tipo 1</option>
+            <option value="tipo2">Tipo 2</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="university_program_id" class="form-label">Programa Universitario</label>
+        <!-- Agrega un select múltiple para seleccionar los programas universitarios -->
+        <select multiple class="form-select" id="university_program_id" name="university_program_id[]" required>
+            <!-- Opciones del select -->
+            <option value="programa1">Programa 1</option>
+            <option value="programa2">Programa 2</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Usuario</button>
+</form>

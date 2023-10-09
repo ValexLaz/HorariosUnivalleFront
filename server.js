@@ -69,6 +69,14 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 app.get('/register', checkNotAuthenticated, (req, res) => {
   res.render("register.ejs")
 })
+
+app.get('/dashboard', checkNotAuthenticated, (req, res) => {
+  res.render("dashboard.ejs")
+})
+
+app.get('/usuarioFormulario', checkNotAuthenticated, (req, res) => {
+  res.render("usuarioFormulario.ejs")
+})
 //end routes
 
 app.delete("/logout", (req, res) => {
