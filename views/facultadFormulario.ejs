@@ -1,0 +1,15 @@
+<form id="formulario" action="/agregar-facultad" method="POST">
+    <div class="mb-3">
+        <label for="nombreFacultad" class="form-label">Nombre de la Facultad</label>
+        <input type="text" class="form-control" id="nombreFacultad" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="descripcionFacultad" class="form-label">Descripción de la Facultad</label>
+        <textarea class="form-control" id="descripcionFacultad" name="description" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="moduleId" class="form-label">ID del Módulo</label>
+        <input type="text" class="form-control" id="moduleId" name="id_module_id" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Facultad</button>
+</form>

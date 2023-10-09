@@ -1,0 +1,15 @@
+<form id="formulario" action="/agregar-programa-universitario" method="POST">
+    <div class="mb-3">
+        <label for="nombrePrograma" class="form-label">Nombre del Programa Universitario</label>
+        <input type="text" class="form-control" id="nombrePrograma" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="descripcionPrograma" class="form-label">Descripción del Programa Universitario</label>
+        <textarea class="form-control" id="descripcionPrograma" name="description" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="facultyId" class="form-label">ID de la Facultad</label>
+        <input type="text" class="form-control" id="facultyId" name="faculty_id" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Programa Universitario</button>
+</form>
