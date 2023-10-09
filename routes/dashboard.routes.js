@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-router.get('/dashboard',(req,res)=>{
+router.get('/dashboardPrincipal',(req,res)=>{
     res.render('index2.ejs')
 }) 
 

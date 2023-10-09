@@ -24,9 +24,11 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride("_method"))
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname+'/public'))
 //configuring the login functionality
 app.use(SessionRoutes);
 app.use(DashboardRoutes);
+
 app.listen(3000,()=>{
   console.log("server is running in http://localhost:3000");
 })
