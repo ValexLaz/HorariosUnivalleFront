@@ -1,10 +1,11 @@
 const router = require("express").Router();
 
 router.get('/dashboard',(req,res)=>{
-    res.render('dashboard.ejs')
+    res.render('index2.ejs')
 })
 
 router.get('/usuarioFormulario',(req,res)=>{
+    
     res.render('usuarioFormulario.ejs')
 })
 

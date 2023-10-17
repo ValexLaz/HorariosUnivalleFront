@@ -1,0 +1,9 @@
+<% function programaUniversitarioInput({id, label, name, required}) { %>
+    
+    <div class="mb-3">
+      <label for="<%= id %>" class="form-label"><%= label %></label>
+      <input type="text" class="form-control" id="<%= id %>" name="<%= name %>" required="<%= required ? 'required' : '' %>">
+    </div>
+
+<% } %>
+

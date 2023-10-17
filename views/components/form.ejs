@@ -1,0 +1,9 @@
+<form id="formulario" class="<% data.model%>" action="/agregar-<% data.model %>" method="POST">
+    <%-data.forEach(data=>{ 
+        programaUniversitarioInput({
+            id : data.id,
+            label:data.label,
+            name:data.name,
+            required:data.required})
+     }); %>    
+</form>

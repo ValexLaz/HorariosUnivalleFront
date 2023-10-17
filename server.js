@@ -11,7 +11,8 @@ const flash = require("express-flash")
 const session = require("express-session")
 const methodOverride = require("method-override")
 const SessionRoutes = require("./routes/session.routes");
-const DashboardRoutes = require("./routes/dashboard.routes")
+const DashboardRoutes = require("./routes/dashboard.routes");
+const SectionRoutes = require("./routes/section.routes.js");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(flash())
@@ -28,6 +29,7 @@ app.use(express.static(__dirname+'/public'))
 //configuring the login functionality
 app.use(SessionRoutes);
 app.use(DashboardRoutes);
+app.use('/section',SectionRoutes);
 
 app.listen(3000,()=>{
   console.log("server is running in http://localhost:3000");

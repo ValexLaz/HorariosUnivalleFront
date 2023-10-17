@@ -1,0 +1,257 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+
+
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  .b-example-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  .b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+  }
+
+  .bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+  }
+
+  .nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  #register-parent{
+    height: auto;
+  }
+</style>
+
+
+
+<!-- Contenido principal -->
+<div id="register-parent" class="container mt-4 mb-4" >
+  <div class="row">
+    <!-- Menú desplegable -->
+    <div class="col-md-3">
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action" id="usuario-link">Usuario</a>
+        <a href="#" class="list-group-item list-group-item-action" id="facultad-link">Facultad</a>
+        <a href="#" class="list-group-item list-group-item-action" id="carrera-link">Carrera</a>
+        <a href="#" class="list-group-item list-group-item-action" id="materia-link">Materia</a>
+        <a href="#" class="list-group-item list-group-item-action" id="semestre-link">Semestre</a>
+        <!-- Agrega más elementos de colección según tus necesidades -->
+      </div>
+    </div>
+
+    <!-- Contenido principal del dashboard -->
+    <div class="col-md-9">
+      <!-- Aquí se mostrarán los formularios y tablas de cada colección -->
+      <!-- Puedes incluir formularios y tablas dinámicamente aquí según la colección seleccionada -->
+      <!-- Ejemplo de formulario -->
+      <div class="card">
+        <div class="card-body" id="respuesta-container">
+          <h5 class="card-title">Formulario para Colección 1</h5>
+          <!-- Agrega aquí el formulario específico para Colección 1 -->
+        </div>
+      </div>
+
+      <!-- Ejemplo de tabla -->
+      <div class="card mt-4" id="tabla-container">
+        <div class="card-body">
+          <h5 class="card-title">Tabla para Colección 1</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+$(document).ready(function () {
+  // Agrega un controlador de eventos para hacer clic en los enlaces
+  $("#usuario-link, #facultad-link, #carrera-link, #materia-link, #semestre-link").click(function (event) {
+    event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+
+    // Obtiene el ID del enlace en el que se hizo clic
+    var linkId = $(this).attr("id");
+    let tipoFormulario = linkId.split("-")[0];
+    console.log(tipoFormulario);
+    // Realiza una petición GET al servidor
+    $.get(`/${tipoFormulario}Formulario`, { linkId: linkId }, function (data) {
+      console.log("Respuesta del servidor:", data);
+      // Actualiza el contenido del contenedor con la respuesta del servidor
+      $("#respuesta-container").html(data);
+    });
+
+    const jsonData = {
+      "data": [
+        {
+          "_id": "1",
+          "name": "John",
+          "last_name": "Doe",
+          "password": "password123",
+          "email": "john@example.com",
+          "users_type_id": "12345",
+          "university_program_id": ["67890", "54321"]
+        },
+        {
+          "_id": "2",
+          "name": "Alice",
+          "last_name": "Smith",
+          "password": "alice_password",
+          "email": "alice@example.com",
+          "users_type_id": "54321",
+          "university_program_id": ["12345"]
+        },
+        {
+          "_id": "3",
+          "name": "Bob",
+          "last_name": "Johnson",
+          "password": "bob_password",
+          "email": "bob@example.com",
+          "users_type_id": "67890",
+          "university_program_id": []
+        }
+        // Otros usuarios...
+      ]
+    }
+
+    // Utilizando la delegación de eventos para formularios dinámicos
+    $(document).on("submit", "#formulario", function (event) {
+      event.preventDefault(); // Evitar el envío del formulario
+
+      // Crear un objeto JSON vacío
+      var formData = {};
+      var formClass = $("#formulario").attr("class");
+
+      // Recorrer los campos del formulario
+      $(this).find(":input").each(function () {
+        var fieldName = $(this).attr("name");
+        var fieldValue = $(this).val();
+
+        // Agregar el campo al objeto JSON si tiene un nombre y un valor
+        if (fieldName && fieldValue) {
+          formData[fieldName] = fieldValue;
+        }
+      });
+
+      // Imprimir el objeto JSON en la consola
+      console.log(formData);
+
+      $.ajax({
+        url: `https://unihorariosapi.onrender.com/api/${formClass}/create`,
+        method: 'POST',
+        data: JSON.stringify(formData), 
+        contentType: 'application/json', 
+        success: function (response) {
+          console.log('Solicitud exitosa:', response);
+        },
+        error: function (error) {
+         
+          console.error('Error en la solicitud:', error);
+        }
+      });
+    });
+
+
+    // Agregar controladores de eventos utilizando delegación de eventos
+    $("#tabla-container").on("click", ".editar", function (event) {
+      event.preventDefault();
+      // Habilitar la edición de las celdas de la fila actual
+      $(this).closest("tr").find(".editable").attr("contenteditable", "true");
+    });
+
+    $("#tabla-container").on("click", ".eliminar", function (event) {
+      event.preventDefault();
+      // Eliminar la fila actual
+      $(this).closest("tr").remove();
+    });
+
+    $("#tabla-container").on("click", ".guardar", function (event) {
+      event.preventDefault();
+      // Deshabilitar la edición de las celdas de la fila actual
+      $(this).closest("tr").find(".editable").attr("contenteditable", "false");
+    });
+
+    const tablaGenerada = generarTablaDesdeJSON(jsonData);
+    document.getElementById("tabla-container").innerHTML = tablaGenerada; // Coloca la tabla en un contenedor con el ID "tabla-container"
+  });
+});
+
+function generarTablaDesdeJSON(jsonData) {
+  // Verifica si el JSON tiene datos válidos
+  if (!jsonData || !jsonData.data || !Array.isArray(jsonData.data) || jsonData.data.length === 0) {
+    return "No se encontraron datos válidos.";
+  }
+
+  // Obtiene las claves de la primera entrada para crear las columnas de la tabla
+  const columnas = Object.keys(jsonData.data[0]);
+
+  // Crea la tabla HTML
+  let tablaHTML = '<table class="table table-bordered"><thead><tr>';
+
+  // Agrega las columnas a la cabecera de la tabla
+  columnas.forEach((columna) => {
+    tablaHTML += `<th>${columna}</th>`;
+  });
+
+  tablaHTML += '<th>:</th>'; // Agrega una columna para las acciones
+  tablaHTML += '</tr></thead><tbody>';
+
+  // Agrega los datos a la tabla
+  jsonData.data.forEach((fila, index) => {
+    tablaHTML += '<tr>';
+    columnas.forEach((columna) => {
+      tablaHTML += `<td class="editable" contenteditable="false">${fila[columna]}</td>`;
+    });
+    tablaHTML += `<td>
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="accionesDropdown${index}" data-bs-toggle="dropdown" aria-expanded="false">
+                      :
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="accionesDropdown${index}">
+                      <li><a class="dropdown-item editar" href="#">Editar</a></li>
+                      <li><a class="dropdown-item eliminar" href="#">Eliminar</a></li>
+                      <li><a class="dropdown-item guardar" href="#">Guardar</a></li>
+                    </ul>
+                  </div>
+                </td>`;
+    tablaHTML += '</tr>';
+  });
+
+  tablaHTML += '</tbody></table>';
+
+  return tablaHTML;
+}
+</script>
