@@ -24,10 +24,6 @@ router.post('/register',checkNotAuthenticated, async (req, res) => {
       res.redirect('/register')
     }
 });
-
-router.get('/index', checkAuthenticated, (req, res) => {
-    res.render("index.ejs", {name: req.user.name})
-})
   
 router.get('/login', checkNotAuthenticated, (req, res) => {
     res.render("login.ejs")
@@ -40,15 +36,34 @@ router.get('/register', checkNotAuthenticated, (req, res) => {
 router.delete("/logout", (req, res) => {
     req.logout(req.user, err => {
       if(err) return next(err)
-      res.redirect("/login")
+      res.redirect("/")
     })
 });
 
-router.post('/login',checkNotAuthenticated,passport.authenticate('local', {
-    successRedirect: '/index',
+router.post('/login', async(req,res,next)=>{
+  try{
+    users.push({
+      id: Date.now().toString(),
+      name: req.body.name,
+      email: req.body.email,
+    })
+    console.log(users); 
+    next();
+  } catch (e) {
+    console.log(e);
+    res.redirect('/login')
+  }
+
+},checkNotAuthenticated,passport.authenticate('local', {
+    successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
 }))
+
+router.get('/',(req,res)=>{
+  console.log(req.user);
+   res.render('main.ejs', {session:req.user || false})
+});
 
 function checkAuthenticated(req, res, next){
   if(req.isAuthenticated()){

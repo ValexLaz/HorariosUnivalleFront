@@ -1,32 +1,40 @@
-const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
+const axios = require("axios");
 
-function initialize(passport, getUserByEmail, getUserById){
-    //function to autehnticate u ser
-    const autehnticateUsers = async (email, password, done) => {
-        const user = getUserByEmail(email)
-        if(user == null){
-            return done(null, false, {message: "No user with that email"})
-        }
-        try{
-            if(await bcrypt.compare(password, user.password)){
-                return done(null, user)
-            } else {
-                return done(null, false, {message: "Password incorrect"})
+function initialize(passport, getUserByEmail, getUserById) {
+  //function to autehnticate u ser
+  const autehnticateUsers = async (email, password, done) => {
+    const user = getUserByEmail(email);
+    try {
+        const response = await axios.post(
+            "http://localhost:5000/api/user/signing",
+            {
+              email,
+              password,
             }
-        } catch (e){
-            console.log(e)
-            return done(e)
-        }
+          );
+          const token = response.data.data.token || false;
+          if (!token) {
+            return done(null, false, { message: "No user with that email" });
+          }
+      
+          return done(null, user);
+    } catch (error) {
+        return done(null, false, { message: "No user with that email" });
     }
-    passport.use(new LocalStrategy({usernameField: 'email'}, autehnticateUsers))
-    passport.serializeUser((user, done) => done(null, user.id))
-    passport.deserializeUser((id, done) => {
-        return done(null, getUserById(id))
-    })
-    passport.serializeUser((id, done) => {
-        return done(null, getUserById(id))
-    });
+
+  };
+  passport.use(
+    new LocalStrategy({ usernameField: "email" }, autehnticateUsers)
+  );
+  passport.serializeUser((user, done) => done(null, user.id));
+  passport.deserializeUser((id, done) => {
+    return done(null, getUserById(id));
+  });
+  passport.serializeUser((id, done) => {
+    return done(null, getUserById(id));
+  });
 }
 
-module.exports = initialize
+module.exports = initialize;
