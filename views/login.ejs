@@ -122,8 +122,6 @@
       import UserRepoAPI from "./js/UserRepoAPI.js";
       $(document).ready(() => {
         const userRepoAPI = new UserRepoAPI();
-
-
         $('#loginForm').submit(async function (e) {
           e.preventDefault();
           var formDataArray = $(this).serializeArray();

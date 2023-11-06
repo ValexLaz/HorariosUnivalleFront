@@ -4,20 +4,20 @@ router.get('/dashboard',(req,res)=>{
     res.render('main.ejs')
 })
 
-router.get('/usuarioFormulario',(req,res)=>{
+router.get('/userForm',(req,res)=>{
     
     res.render('usuarioFormulario.ejs')
 })
 
-router.get('/carreraFormulario',(req,res)=>{
+router.get('/uniProgramsForm',(req,res)=>{
     res.render('carreraFormulario.ejs')
 })
 
-router.get('/semestreFormulario',(req,res)=>{
+router.get('/semesterForm',(req,res)=>{
     res.render('semestreFormulario.ejs')
 })
 
-router.get('/facultadFormulario',(req,res)=>{
+router.get('/facultyForm',(req,res)=>{
     res.render('facultadFormulario.ejs')
 })
 
