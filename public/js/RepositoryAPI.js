@@ -1,47 +1,43 @@
 class RepositoryAPI {
   constructor(collection) {
-    this.axios = axios.create({
-      withCredentials: true,
-    });
-    
+    this.axios = axios;
+    this.urlBase = "";
+    this.collection = "";
+    this.#generateUrlBase(collection);
+  }
+  #generateUrlBase(collection) {
     this.urlBase = `http://localhost:5000/api/${collection}`;
   }
-  async post(data,endpoint = 'create') {
-    try {
-      console.log(this.urlBase);
-      const route = `${this.urlBase}/${endpoint}`
-      const response= await this.axios.post(route,data);
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
+
+  setCollection(collection) {
+    this.#generateUrlBase(collection);
   }
-  async update(data,id){
-    try {
-      const route = `${this.urlBase}/${id}`
-      const response= await this.axios.update(route,data);
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
+  async post(data, endpoint = "create") {
+    const route = `${this.urlBase}/${endpoint}`;
+    console.log(route);
+    const response =  await this.axios.post(route, data);
+    return response.data;
   }
-  async delete(id){
-    try {
-      const route = `${this.urlBase}/${id}`;
-      const response = await this.axios.delete(route);
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
+  async updateByID(data, id) {
+    const route = `${this.urlBase}/${id}`;
+    const response =  await this.axios.put(route, data);
+    return response.data;
   }
-  async get(endpoint = '',id = ''){
-    try {
-      const route = `${this.urlBase}/${endpoint || id}`
-      const response = await this.axios.get(route);
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
+  async deleteByID(id) {
+    const route = `${this.urlBase}/${id}`;
+    const response = await this.axios.delete(route);
+    return response.data;
+  }
+  async getAll() {
+    const route = `${this.urlBase}/all?parametro1=valor$parametro2=valor2`;
+    const response = await this.axios.get(route);
+    return response.data;
+  }
+  async getByID(id) {
+    const route = `${this.urlBase}/${id}`;
+    const response =  await this.axios.get(route);
+    return response.data;
+    
   }
 }
 

@@ -1,5 +1,4 @@
 <form id="formulario" class="user" action="/agregar-usuario" method="POST">
-    <!-- Campos del formulario -->
     <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="name" name="name" required>
@@ -17,23 +16,16 @@
         <input type="password" class="form-control" id="password" name="password" required>
     </div>
     <div class="mb-3">
-        <label for="users_type_id" class="form-label">Tipo de Usuario</label>
-        <!-- Agrega un select para seleccionar el tipo de usuario -->
-        <select class="form-select" id="users_type_id" name="users_type_id" required>
-            <!-- Opciones del select -->
-            <option value="tipo1">Tipo 1</option>
-            <option value="tipo2">Tipo 2</option>
-            <!-- Agrega más opciones según tus necesidades -->
+        <label for="user_type" class="form-label">Tipo de Usuario</label>
+        <select class="form-select" id="user_type" name="user_type" required>
+            <option value="admin">Administrador</option>
+            <option value="directorCarrera">Director de Carrera</option>
         </select>
     </div>
     <div class="mb-3">
         <label for="university_program_id" class="form-label">Programa Universitario</label>
-        <!-- Agrega un select múltiple para seleccionar los programas universitarios -->
-        <select multiple class="form-select" id="university_program_id" name="university_program_id[]" required>
-            <!-- Opciones del select -->
-            <option value="programa1">Programa 1</option>
-            <option value="programa2">Programa 2</option>
-            <!-- Agrega más opciones según tus necesidades -->
+        <select multiple class="form-select" id="university_program_id" name="university_program_id" required>
+            <option value="ISI">ISI (Ingenieria en sistemas informaticos)</option>
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Agregar Usuario</button>

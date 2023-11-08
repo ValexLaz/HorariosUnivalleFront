@@ -1,7 +1,5 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-
-
   .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -52,7 +50,8 @@
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
   }
-  #register-parent{
+
+  #register-parent {
     height: auto;
   }
 </style>
@@ -60,16 +59,25 @@
 
 
 <!-- Contenido principal -->
-<div id="register-parent" class="container mt-4 mb-4" >
+<div id="register-parent" class="container mt-4 mb-4">
   <div class="row">
     <!-- Menú desplegable -->
     <div class="col-md-3">
       <div class="list-group">
+<<<<<<< HEAD
         <a href="#" class="list-group-item list-group-item-action" id="us">Usuario</a>
         <a href="#" class="list-group-item list-group-item-action" id="facultad-link">Facultad</a>
         <a href="#" class="list-group-item list-group-item-action" id="carrera-link">Carrera</a>
         <a href="#" class="list-group-item list-group-item-action" id="materia-link">Materia</a>
         <a href="#" class="list-group-item list-group-item-action" id="semestre-link">Semestre</a>
+=======
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="user">Usuario</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="faculty">Facultad</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link  " id="uniPrograms">Carrera</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="materia">Materia</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="semester">Semestre</a>
+
+>>>>>>> bf430631c6bc33c20b7c5d29b0a7d91303f3c690
       </div>
     </div>
 
@@ -79,17 +87,30 @@
           <h5 class="card-title">Formulario para Colección 1</h5>
         </div>
       </div>
+<<<<<<< HEAD
 
       <div class="card mt-4" id="tabla-container">
         <div class="card-body">
           <h5 class="card-title">Tabla para Colección 1</h5>
         </div>
+=======
+    </div>
+  </div>
+  <div class="row">
+    <!-- Ejemplo de tabla -->
+    <div class="card mt-4" id="tabla-container">
+      <div class="card-body">
+        <h5 class="card-title">Tabla para Colección 1</h5>
+>>>>>>> bf430631c6bc33c20b7c5d29b0a7d91303f3c690
       </div>
     </div>
   </div>
 </div>
 
+<script type="module" src="./js/RepositoryAPI.js"></script>
+<script type="module">
 
+<<<<<<< HEAD
 <script>
 $(document).ready(function () {
   $("#usuario-link, #facultad-link, #carrera-link, #materia-link, #semestre-link").click(function (event) {
@@ -139,57 +160,93 @@ $(document).ready(function () {
     $(document).on("submit", "#formulario", function (event) {
       event.preventDefault(); 
       // Crear un objeto JSON vacío
+=======
+  import RepositoryAPI from './js/RepositoryAPI.js';
+
+  $(document).ready(function () {
+    const repositoryAPI = new RepositoryAPI();
+
+    //Se encarga de traer los formularios(vistas) para renderizar
+    $(".formulario-link").click(async function (event) {
+      event.preventDefault();
+      var typeForm = $(this).attr("id");
+      $.get(`/${typeForm}Form`, { typeForm: typeForm }, function (data) {
+        console.log("Respuesta del servidor:", data);
+        $("#respuesta-container").html(data);
+      });
+      repositoryAPI.setCollection(typeForm);
+      const response = await repositoryAPI.getAll();
+      const tablaGenerada = generarTablaDesdeJSON(response.data);
+      document.getElementById("tabla-container").innerHTML = tablaGenerada; // Coloca la tabla en un contenedor con el ID "tabla-container"
+    });
+
+    $(document).on("submit", "#formulario", async function (event) {
+      event.preventDefault();
+>>>>>>> bf430631c6bc33c20b7c5d29b0a7d91303f3c690
       var formData = {};
       var formClass = $("#formulario").attr("class");
-
-      // Recorrer los campos del formulario
       $(this).find(":input").each(function () {
         var fieldName = $(this).attr("name");
         var fieldValue = $(this).val();
-
-        // Agregar el campo al objeto JSON si tiene un nombre y un valor
         if (fieldName && fieldValue) {
           formData[fieldName] = fieldValue;
         }
       });
-
-      // Imprimir el objeto JSON en la consola
-      console.log(formData);
-
-      $.ajax({
-        url: `https://unihorariosapi.onrender.com/api/${formClass}/create`,
-        method: 'POST',
-        data: JSON.stringify(formData), 
-        contentType: 'application/json', 
-        success: function (response) {
-          console.log('Solicitud exitosa:', response);
-        },
-        error: function (error) {
-         
-          console.error('Error en la solicitud:', error);
-        }
-      });
+      repositoryAPI.setCollection(formClass);
+      const response = await repositoryAPI.post(formData);
+      console.log(response.data);
     });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> bf430631c6bc33c20b7c5d29b0a7d91303f3c690
     $("#tabla-container").on("click", ".editar", function (event) {
       event.preventDefault();
+      var $row = $(this).closest("tr");
+      var rowIndex = $row.index();
+      let originalContent = {};
+      originalContent[rowIndex] = {};
+      $row.find(".editable").each(function () {
+        var $cell = $(this);
+        var header = $row.closest("table").find("th").eq($cell.index()).text(); // Obtener el texto del encabezado correspondiente a esta celda
+        originalContent[rowIndex][header] = $cell.html(); // Almacenar el contenido de la celda usando el texto del encabezado como clave
+      });
+
+      console.log("Antes de editar:", originalContent[rowIndex]);
+
       // Habilitar la edición de las celdas de la fila actual
-      $(this).closest("tr").find(".editable").attr("contenteditable", "true");
+      $row.find(".editable").attr("contenteditable", "true");
     });
 
-    $("#tabla-container").on("click", ".eliminar", function (event) {
+    $("#tabla-container").on("click", ".guardar",async function (event) {
       event.preventDefault();
-      // Eliminar la fila actual
+      let $row = $(this).closest("tr");
+      let rowId = $row.attr('id');
+      let rowIndex = $row.index();
+
+      let newContent = {};
+      $row.find(".editable").each(function () {
+        let $cell = $(this);
+        let header = $row.closest("table").find("th").eq($cell.index()).text(); // Obtener el texto del encabezado correspondiente a esta celda
+        newContent[header] = $cell.html(); // Almacenar el contenido nuevo de la celda
+      });
+      const response = await repositoryAPI.updateByID(newContent,rowId);
+      $row.find(".editable").removeAttr("contenteditable");
+    });
+
+    $("#tabla-container").on("click", ".eliminar",async function (event) {
+      event.preventDefault();
+      let $row = $(this).closest("tr");
+      let rowId = $row.attr('id');
+      console.log(rowId);
+      const response = await repositoryAPI.deleteByID(rowId);
+      console.log(response);
       $(this).closest("tr").remove();
     });
 
-    $("#tabla-container").on("click", ".guardar", function (event) {
-      event.preventDefault();
-      // Deshabilitar la edición de las celdas de la fila actual
-      $(this).closest("tr").find(".editable").attr("contenteditable", "false");
-    });
 
+<<<<<<< HEAD
     const tablaGenerada = generarTablaDesdeJSON(jsonData);
     document.getElementById("tabla-container").innerHTML = tablaGenerada;
   });
@@ -207,14 +264,31 @@ function generarTablaDesdeJSON(jsonData) {
 
   tablaHTML += '<th>:</th>'; 
   tablaHTML += '</tr></thead><tbody>';
+=======
+  });
 
-  // Agrega los datos a la tabla
-  jsonData.data.forEach((fila, index) => {
-    tablaHTML += '<tr>';
+  function generarTablaDesdeJSON(jsonData) {
+    if (!jsonData || !jsonData || !Array.isArray(jsonData) || jsonData.length === 0) {
+      return "No se encontraron datos válidos.";
+    }
+    let columnas = Object.keys(jsonData[0])
+    columnas = columnas.filter(elemento => elemento !== "_id");
+    console.log(columnas);
+    let tablaHTML = '<div class="table-responsive mt-3"><table class="table table-striped table-hover table-bordered"><thead><tr>';
+>>>>>>> bf430631c6bc33c20b7c5d29b0a7d91303f3c690
+
     columnas.forEach((columna) => {
-      tablaHTML += `<td class="editable" contenteditable="false">${fila[columna]}</td>`;
+      tablaHTML += `<th>${columna}</th>`;
     });
-    tablaHTML += `<td>
+
+    tablaHTML += '<th>:</th>';
+
+    jsonData.forEach((fila, index) => {
+      tablaHTML += `<tr id="${fila._id}">`;
+      columnas.forEach((columna) => {
+        tablaHTML += `<td class="editable fs-6" contenteditable="false">${fila[columna]}</td>`; // Bootstrap 5
+      });
+      tablaHTML += `<td>
                   <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="accionesDropdown${index}" data-bs-toggle="dropdown" aria-expanded="false">
                       :
@@ -226,11 +300,11 @@ function generarTablaDesdeJSON(jsonData) {
                     </ul>
                   </div>
                 </td>`;
-    tablaHTML += '</tr>';
-  });
+      tablaHTML += '</tr>';
+    });
 
-  tablaHTML += '</tbody></table>';
-
-  return tablaHTML;
-}
+    tablaHTML += '</tbody></table>';
+    tablaHTML += '</div>';
+    return tablaHTML;
+  }
 </script>
