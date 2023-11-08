@@ -31,6 +31,6 @@ app.use(SessionRoutes);
 app.use(DashboardRoutes);
 app.use('/section',SectionRoutes);
 
-app.listen(3000,()=>{
-  console.log("server is running in http://localhost:3000");
+app.listen(process.env.PORT,()=>{
+  console.log("server is running in http://localhost:",process.env.PORT);
 })
