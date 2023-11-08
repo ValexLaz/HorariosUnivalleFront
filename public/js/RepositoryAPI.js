@@ -44,4 +44,5 @@ class RepositoryAPI {
     }
   }
 }
+
 export default RepositoryAPI;

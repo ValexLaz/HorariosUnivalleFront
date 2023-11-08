@@ -65,28 +65,21 @@
     <!-- Menú desplegable -->
     <div class="col-md-3">
       <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action" id="usuario-link">Usuario</a>
+        <a href="#" class="list-group-item list-group-item-action" id="us">Usuario</a>
         <a href="#" class="list-group-item list-group-item-action" id="facultad-link">Facultad</a>
         <a href="#" class="list-group-item list-group-item-action" id="carrera-link">Carrera</a>
         <a href="#" class="list-group-item list-group-item-action" id="materia-link">Materia</a>
         <a href="#" class="list-group-item list-group-item-action" id="semestre-link">Semestre</a>
-        <!-- Agrega más elementos de colección según tus necesidades -->
       </div>
     </div>
 
-    <!-- Contenido principal del dashboard -->
     <div class="col-md-9">
-      <!-- Aquí se mostrarán los formularios y tablas de cada colección -->
-      <!-- Puedes incluir formularios y tablas dinámicamente aquí según la colección seleccionada -->
-      <!-- Ejemplo de formulario -->
       <div class="card">
         <div class="card-body" id="respuesta-container">
           <h5 class="card-title">Formulario para Colección 1</h5>
-          <!-- Agrega aquí el formulario específico para Colección 1 -->
         </div>
       </div>
 
-      <!-- Ejemplo de tabla -->
       <div class="card mt-4" id="tabla-container">
         <div class="card-body">
           <h5 class="card-title">Tabla para Colección 1</h5>
@@ -99,18 +92,14 @@
 
 <script>
 $(document).ready(function () {
-  // Agrega un controlador de eventos para hacer clic en los enlaces
   $("#usuario-link, #facultad-link, #carrera-link, #materia-link, #semestre-link").click(function (event) {
     event.preventDefault(); // Evita el comportamiento predeterminado del enlace
 
-    // Obtiene el ID del enlace en el que se hizo clic
     var linkId = $(this).attr("id");
     let tipoFormulario = linkId.split("-")[0];
     console.log(tipoFormulario);
-    // Realiza una petición GET al servidor
     $.get(`/${tipoFormulario}Formulario`, { linkId: linkId }, function (data) {
       console.log("Respuesta del servidor:", data);
-      // Actualiza el contenido del contenedor con la respuesta del servidor
       $("#respuesta-container").html(data);
     });
 
@@ -147,10 +136,8 @@ $(document).ready(function () {
       ]
     }
 
-    // Utilizando la delegación de eventos para formularios dinámicos
     $(document).on("submit", "#formulario", function (event) {
-      event.preventDefault(); // Evitar el envío del formulario
-
+      event.preventDefault(); 
       // Crear un objeto JSON vacío
       var formData = {};
       var formClass = $("#formulario").attr("class");
@@ -185,7 +172,6 @@ $(document).ready(function () {
     });
 
 
-    // Agregar controladores de eventos utilizando delegación de eventos
     $("#tabla-container").on("click", ".editar", function (event) {
       event.preventDefault();
       // Habilitar la edición de las celdas de la fila actual
@@ -205,28 +191,21 @@ $(document).ready(function () {
     });
 
     const tablaGenerada = generarTablaDesdeJSON(jsonData);
-    document.getElementById("tabla-container").innerHTML = tablaGenerada; // Coloca la tabla en un contenedor con el ID "tabla-container"
+    document.getElementById("tabla-container").innerHTML = tablaGenerada;
   });
 });
 
 function generarTablaDesdeJSON(jsonData) {
-  // Verifica si el JSON tiene datos válidos
   if (!jsonData || !jsonData.data || !Array.isArray(jsonData.data) || jsonData.data.length === 0) {
     return "No se encontraron datos válidos.";
   }
-
-  // Obtiene las claves de la primera entrada para crear las columnas de la tabla
   const columnas = Object.keys(jsonData.data[0]);
-
-  // Crea la tabla HTML
   let tablaHTML = '<table class="table table-bordered"><thead><tr>';
-
-  // Agrega las columnas a la cabecera de la tabla
   columnas.forEach((columna) => {
     tablaHTML += `<th>${columna}</th>`;
   });
 
-  tablaHTML += '<th>:</th>'; // Agrega una columna para las acciones
+  tablaHTML += '<th>:</th>'; 
   tablaHTML += '</tr></thead><tbody>';
 
   // Agrega los datos a la tabla
