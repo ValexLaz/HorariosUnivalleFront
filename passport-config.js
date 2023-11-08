@@ -8,7 +8,7 @@ function initialize(passport, getUserByEmail, getUserById) {
     const user = getUserByEmail(email);
     try {
         const response = await axios.post(
-            "http://localhost:5000/api/user/signing",
+            "https://unihorariosapi.onrender.com/api/user/signing",
             {
               email,
               password,
