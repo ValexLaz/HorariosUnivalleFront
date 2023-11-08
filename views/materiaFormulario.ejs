@@ -1,0 +1,24 @@
+<form id="formulario" class="class" action="/agregar-algo" method="POST">
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="hours_demanded" class="form-label">Horas de Trabajo</label>
+        <input type="number" class="form-control" id="hours_demanded" name="hours_demanded" required>
+    </div>
+    <div class="mb-3">
+        <label for="id_semester" class="form-label">Semestre</label>
+        <select class="form-select" id="id_semester" name="id_semester" required>
+            <option value="1">Semestre 1</option>
+            <option value="2">Semestre 2</option>
+            <option value="3">Semestre 3</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Algo</button>
+</form>
