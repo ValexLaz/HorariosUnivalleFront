@@ -1,0 +1,95 @@
+<form id="formulario"class="professors" action="/agregar-profesor" method="POST">
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre del Profesor</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Correo Electrónico</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+
+    <!-- University Program Selection -->
+    <div class="mb-3">
+        <label for="id_university_program" class="form-label">Programa Universitario</label>
+        <select class="form-select" id="id_university_program" name="id_university_program" required>
+            <option value="ISI">ISI (Ingeniería en Sistemas Informáticos)</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+
+    <!-- Semester Selection (Initially Disabled) -->
+    <div class="mb-3">
+        <label for="id_semestre" class="form-label">Semestre</label>
+        <select class="form-select" id="id_semestre" name="id_semestre" disabled required>
+            <option value="1">Semestre 1</option>
+            <option value="2">Semestre 2</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+
+    <!-- Class Selection (Initially Disabled) -->
+    <div class="mb-3">
+        <label for="id_class" class="form-label">Clase</label>
+        <select class="form-select" id="id_class" name="id_class" disabled required>
+            <option value="Class A">Clase A</option>
+            <option value="Class B">Clase B</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+
+    <!-- Botón para Agregar -->
+    <button type="button" class="btn btn-primary" id="agregarCampo">Agregar</button>
+
+    <!-- Contenedor para mostrar campos agregados -->
+    <div id="camposAgregados"></div>
+
+    <button type="submit" class="btn btn-primary">Agregar Profesor</button>
+</form>
+
+/*Revisar el script para ver si funciona:
+Siguiendo los ejemplos anteriores sigamos con el formulario professors que necesito que tenga los siguientes campos: name, email, id_university_program, id_semestre, id_class. Para id_university_program, id_semestre, id_class necesito que sean listas en las que se puede elegir opciones predeterminadas anteriormente, además puedo agregar varios al mismo formulario entonces necesito que haya un botón de agregar y que haya una forma de visualizar todo lo agregado a los 3 diferentes campos. Que id_semestre y id_class estén bloqueados hasta que se elija el id_university_program, cuando se elija university_program se desbloquea semestrer y cuando se elije semester se desbloquea class y entonces recién se agregar los tres campos al formulario y se visualiza de alguna manera todo lo agregado, ya que se pueden agregar varios.
+*/
+<script>
+    document.getElementById("id_university_program").addEventListener("change", function () {
+        const idSemestre = document.getElementById("id_semestre");
+        idSemestre.disabled = false;
+        idSemestre.focus();
+    });
+
+    document.getElementById("id_semestre").addEventListener("change", function () {
+        const idClass = document.getElementById("id_class");
+        idClass.disabled = false;
+        idClass.focus();
+    });
+
+    document.getElementById("agregarCampo").addEventListener("click", function () {
+        const camposAgregados = document.getElementById("camposAgregados");
+        const nuevoCampo = document.createElement("div");
+        nuevoCampo.innerHTML = `
+            <div class="mb-3">
+                <label for="id_university_program" class="form-label">Programa Universitario</label>
+                <select class="form-select" name="id_university_program" required>
+                    <option value="ISI">ISI (Ingeniería en Sistemas Informáticos)</option>
+                    <!-- Agrega más opciones según tus necesidades -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id_semestre" class="form-label">Semestre</label>
+                <select class="form-select" name="id_semestre" required>
+                    <option value="1">Semestre 1</option>
+                    <option value="2">Semestre 2</option>
+                    <!-- Agrega más opciones según tus necesidades -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id_class" class="form-label">Clase</label>
+                <select class="form-select" name="id_class" required>
+                    <option value="Class A">Clase A</option>
+                    <option value="Class B">Clase B</option>
+                    <!-- Agrega más opciones según tus necesidades -->
+                </select>
+            </div>
+        `;
+        camposAgregados.appendChild(nuevoCampo);
+    });
+</script>
