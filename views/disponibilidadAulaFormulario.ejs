@@ -1,0 +1,109 @@
+<form id="formulario" class="classroom-availabilities" action="/agregar-classroom-availability" method="POST">
+    <div class="mb-3">
+        <label for="id_building" class="form-label">Edificio</label>
+        <select class="form-select" id="id_building" name="id_building" required>
+            <option value="building1">Edificio 1</option>
+            <option value="building2">Edificio 2</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="id_classroom" class="form-label">Aula</label>
+        <select class="form-select" id="id_classroom" name="id_classroom" required disabled>
+            <option value="classroom1">Aula 1</option>
+            <option value="classroom2">Aula 2</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Disponibilidad Horaria</label>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Disponible</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Generar filas de tabla para los intervalos horarios del lunes -->
+                <tr>
+                    <td>Lunes - 7:10-8:00</td>
+                    <td>
+                        <input type="checkbox" name="7:10-8:00" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 8:00-8:50</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-8:00-8:50]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 9:00-9:50</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-9:00-9:50]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 9:50-10:40</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-9:50-10:40]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 10:50-11:40</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-10:50-11:40]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 11:40-12:30</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-11:40-12:30]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 13:30-14:20</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-13:30-14:20]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 14:20-15:10</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-14:20-15:10]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 15:10-16:00</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-15:10-16:00]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 16:00-17:10</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-16:00-17:10]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 17:10-18:00</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-17:10-18:00]" value="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lunes - 18:00-19:00</td>
+                    <td>
+                        <input type="checkbox" name="availability[Lunes-18:00-19:00]" value="true">
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Definir Disponibilidad</button>
+</form>

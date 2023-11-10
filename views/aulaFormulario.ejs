@@ -1,0 +1,27 @@
+<form id="formulario" class="classrooms" action="/agregar-classroom" method="POST">
+    <div class="mb-3">
+        <label for="code" class="form-label">Código</label>
+        <input type="text" class="form-control" id="code" name="code" required>
+    </div>
+    <div class="mb-3">
+        <label for="id_classroom_type" class="form-label">Tipo de Aula</label>
+        <select class="form-select" id="id_classroom_type" name="id_classroom_type" required>
+            <option value="1">Aula tipo 1</option>
+            <option value="2">Aula tipo 2</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="id_building" class="form-label">Edificio</label>
+        <select class="form-select" id="id_building" name="id_building" required>
+            <option value="1">Edificio 1</option>
+            <option value="2">Edificio 2</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Aula</button>
+</form>
