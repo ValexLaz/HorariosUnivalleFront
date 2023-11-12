@@ -1,20 +1,9 @@
-<form id="formulario" class="classroom-availabilities" action="/agregar-classroom-availability" method="POST">
+<form id="formulario" class="professor-availabilities" action="/agregar-professor-availabilities" method="POST">
     <div class="mb-3">
-        <label for="id_building" class="form-label">Edificio</label>
-        <select class="form-select" id="id_building" name="id_building" required>
-            <option value="building1">Edificio 1</option>
-            <option value="building2">Edificio 2</option>
-            <!-- Agrega más opciones según tus necesidades -->
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label for="id_classroom" class="form-label">Aula</label>
-        <select class="form-select" id="id_classroom" name="id_classroom" required disabled>
-            <option value="classroom1">Aula 1</option>
-            <option value="classroom2">Aula 2</option>
-            <!-- Agrega más opciones según tus necesidades -->
-        </select>
+        <label for="teacher_search" class="form-label">Buscar Docente</label>
+        <input type="text" class="form-control" id="teacher_search" name="teacher_search"
+            placeholder="Ingrese el nombre del docente" required>
+        <div id="teacher_suggestions" class="suggestions"></div>
     </div>
 
     <div class="mb-3">
@@ -112,7 +101,6 @@
                         <input type="checkbox" name="availability[18:00-19:00]" value="true">
                     </td>
                 </tr>
-
             </tbody>
         </table>
     </div>
@@ -120,27 +108,49 @@
     <button type="button" class="btn btn-secondary" id="agregarDia">Agregar Día</button>
 
     <button type="submit" class="btn btn-primary">Definir Disponibilidad</button>
-</form>
 
-<script>
-    // Script para habilitar el campo de aula al seleccionar un edificio
-    document.getElementById('id_building').addEventListener('change', function () {
-        document.getElementById('id_classroom').disabled = false;
-    });
+    <script>
+        // Script para agregar un nuevo día con los mismos intervalos horarios
+        document.getElementById('agregarDia').addEventListener('click', function () {
+            var daySelect = document.getElementById('day');
+            var selectedDay = daySelect.options[daySelect.selectedIndex].value;
 
-    // Script para agregar un nuevo día con los mismos intervalos horarios
-    document.getElementById('agregarDia').addEventListener('click', function () {
-        var daySelect = document.getElementById('day');
-        var selectedDay = daySelect.options[daySelect.selectedIndex].value;
-
-        // Clonar y agregar filas para los intervalos horarios genéricos
-        var tableBody = document.querySelector('.table tbody');
-        var genericRows = tableBody.querySelectorAll('tr');
-        genericRows.forEach(function (genericRow) {
-            var newRow = genericRow.cloneNode(true);
-            var dayCell = newRow.cells[0];
-            dayCell.textContent = selectedDay + ' - ' + dayCell.textContent;
-            tableBody.appendChild(newRow);
+            // Clonar y agregar filas para los intervalos horarios genéricos
+            var tableBody = document.querySelector('.table tbody');
+            var genericRows = tableBody.querySelectorAll('tr');
+            genericRows.forEach(function (genericRow) {
+                var newRow = genericRow.cloneNode(true);
+                var dayCell = newRow.cells[0];
+                dayCell.textContent = selectedDay + ' - ' + dayCell.textContent;
+                tableBody.appendChild(newRow);
+            });
         });
-    });
-</script>
+
+        // Script para la función de búsqueda de docentes
+        document.getElementById('teacher_search').addEventListener('input', function () {
+            var searchInput = this.value.toLowerCase();
+            var suggestionsContainer = document.getElementById('teacher_suggestions');
+            suggestionsContainer.innerHTML = '';
+
+            // Simulación de datos de docentes
+            var teachers = ['Profesor 1', 'Profesor 2', 'Profesor 3', 'Otro Profesor'];
+
+            // Filtrar docentes que coincidan con la búsqueda
+            var matchingTeachers = teachers.filter(function (teacher) {
+                return teacher.toLowerCase().includes(searchInput);
+            });
+
+            // Mostrar sugerencias
+            matchingTeachers.forEach(function (teacher) {
+                var suggestion = document.createElement('div');
+                suggestion.className = 'suggestion';
+                suggestion.textContent = teacher;
+                suggestion.addEventListener('click', function () {
+                    document.getElementById('teacher_search').value = teacher;
+                    suggestionsContainer.innerHTML = '';
+                });
+                suggestionsContainer.appendChild(suggestion);
+            });
+        });
+    </script>
+</form>

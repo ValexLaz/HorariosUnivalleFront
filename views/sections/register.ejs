@@ -69,7 +69,14 @@
         <a href="#" class="list-group-item list-group-item-action formulario-link  " id="uniPrograms">Carrera</a>
         <a href="#" class="list-group-item list-group-item-action formulario-link " id="materia">Materia</a>
         <a href="#" class="list-group-item list-group-item-action formulario-link " id="semester">Semestre</a>
-
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="classroom">Aula</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="classroom_types">Tipo Aula</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="buildings">Modulo</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="professors">Docente</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link "
+          id="professors_availabilities">Disponibilidad Docente</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link "
+          id="classroom_availabilities">Disponibilidad aula</a>
       </div>
     </div>
 
@@ -124,7 +131,7 @@
           formData[fieldName] = fieldValue;
         }
       });
-      
+
       const response = await repositoryAPI.post(formData);
       console.log(response.data);
     });
@@ -147,7 +154,7 @@
       $row.find(".editable").attr("contenteditable", "true");
     });
 
-    $("#tabla-container").on("click", ".guardar",async function (event) {
+    $("#tabla-container").on("click", ".guardar", async function (event) {
       event.preventDefault();
       let $row = $(this).closest("tr");
       let rowId = $row.attr('id');
@@ -159,11 +166,11 @@
         let header = $row.closest("table").find("th").eq($cell.index()).text(); // Obtener el texto del encabezado correspondiente a esta celda
         newContent[header] = $cell.html(); // Almacenar el contenido nuevo de la celda
       });
-      const response = await repositoryAPI.updateByID(newContent,rowId);
+      const response = await repositoryAPI.updateByID(newContent, rowId);
       $row.find(".editable").removeAttr("contenteditable");
     });
 
-    $("#tabla-container").on("click", ".eliminar",async function (event) {
+    $("#tabla-container").on("click", ".eliminar", async function (event) {
       event.preventDefault();
       let $row = $(this).closest("tr");
       let rowId = $row.attr('id');
