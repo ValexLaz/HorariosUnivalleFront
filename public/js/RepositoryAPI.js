@@ -1,14 +1,12 @@
 class RepositoryAPI {
   constructor(collection) {
-    this.axios = axios.create({
-      withCredentials: true
-    });
+    this.axios = axios;
     this.urlBase = "";
     this.collection = "";
     this.#generateUrlBase(collection);
   }
   #generateUrlBase(collection) {
-    this.urlBase = `https://unihorariosapi.onrender.com/api/${collection}`;
+    this.urlBase = `http://localhost:5000/api/${collection}`;
   }
 
   setCollection(collection) {
