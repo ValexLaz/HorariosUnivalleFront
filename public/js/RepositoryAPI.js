@@ -8,7 +8,7 @@ class RepositoryAPI {
     this.#generateUrlBase(collection);
   }
   #generateUrlBase(collection) {
-    this.urlBase = `https://unihorariosapi.onrender.com/api/${collection}`;
+    this.urlBase = `https://apiwebhorariounivallle.onrender.com/api/${collection}`;
   }
 
   setCollection(collection) {
