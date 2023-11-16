@@ -67,21 +67,23 @@
         <a href="#" class="list-group-item list-group-item-action formulario-link " id="user">Usuario</a>
         <a href="#" class="list-group-item list-group-item-action formulario-link " id="faculty">Facultad</a>
         <a href="#" class="list-group-item list-group-item-action formulario-link  " id="uniPrograms">Carrera</a>
-        <a href="#" class="list-group-item list-group-item-action formulario-link " id="materia">Materia</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="class">Materia</a>
         <a href="#" class="list-group-item list-group-item-action formulario-link " id="semester">Semestre</a>
-
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="classroom">Aula</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="classroom/types">Tipo Aula</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="building">Modulo</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link " id="professors">Docente</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link "
+          id="professors/avails">Disponibilidad Docente</a>
+        <a href="#" class="list-group-item list-group-item-action formulario-link "
+          id="classroom_avails">Disponibilidad aula</a>
       </div>
     </div>
 
-    <!-- Contenido principal del dashboard -->
     <div class="col-md-9">
-      <!-- Aquí se mostrarán los formularios y tablas de cada colección -->
-      <!-- Puedes incluir formularios y tablas dinámicamente aquí según la colección seleccionada -->
-      <!-- Ejemplo de formulario -->
       <div class="card">
         <div class="card-body" id="respuesta-container">
           <h5 class="card-title">Formulario para Colección 1</h5>
-          <!-- Agrega aquí el formulario específico para Colección 1 -->
         </div>
       </div>
     </div>
@@ -129,7 +131,7 @@
           formData[fieldName] = fieldValue;
         }
       });
-      repositoryAPI.setCollection(formClass);
+
       const response = await repositoryAPI.post(formData);
       console.log(response.data);
     });
@@ -152,7 +154,7 @@
       $row.find(".editable").attr("contenteditable", "true");
     });
 
-    $("#tabla-container").on("click", ".guardar",async function (event) {
+    $("#tabla-container").on("click", ".guardar", async function (event) {
       event.preventDefault();
       let $row = $(this).closest("tr");
       let rowId = $row.attr('id');
@@ -164,11 +166,11 @@
         let header = $row.closest("table").find("th").eq($cell.index()).text(); // Obtener el texto del encabezado correspondiente a esta celda
         newContent[header] = $cell.html(); // Almacenar el contenido nuevo de la celda
       });
-      const response = await repositoryAPI.updateByID(newContent,rowId);
+      const response = await repositoryAPI.updateByID(newContent, rowId);
       $row.find(".editable").removeAttr("contenteditable");
     });
 
-    $("#tabla-container").on("click", ".eliminar",async function (event) {
+    $("#tabla-container").on("click", ".eliminar", async function (event) {
       event.preventDefault();
       let $row = $(this).closest("tr");
       let rowId = $row.attr('id');
