@@ -1,15 +1,47 @@
 <form id="formulario" class="uniPrograms" action="/agregar-programa-universitario" method="POST">
     <div class="mb-3">
-        <label for="nombrePrograma" class="form-label">Nombre del Programa Universitario</label>
+        <label for="nombrePrograma" class="form-label">Siglas del Programa</label>
         <input type="text" class="form-control" id="nombrePrograma" name="name" required>
     </div>
     <div class="mb-3">
-        <label for="descripcionPrograma" class="form-label">Descripción del Programa Universitario</label>
+        <label for="descripcionPrograma" class="form-label">Nombre del Programa</label>
         <textarea class="form-control" id="descripcionPrograma" name="description" required></textarea>
     </div>
-    <div class="mb-3">
-        <label for="facultyId" class="form-label">ID de la Facultad</label>
-        <input type="text" class="form-control" id="facultyId" name="faculty_id" required>
+    <div id='RadioButtonContainer' class="mb-3">
+        <label for="facultyId" class="form-label">Facultad</label>
     </div>
     <button type="submit" class="btn btn-primary">Agregar Programa Universitario</button>
 </form>
+<script type="module" src="js/RepositoryAPI.js"></script>
+<script type="module">
+    import RepositoryAPI from './js/RepositoryAPI.js';
+    const repoAPI = new RepositoryAPI('faculty');
+
+    async function getDetailsByFaculties() {
+        const response = await repoAPI.getAll();
+        const radioContainer = $('#RadioButtonContainer');
+        console.log("faculties:");
+        console.log(response.data);
+        response.data.forEach(faculty => {
+            const radioDiv = $('<div>').addClass('form-check');
+            const radioInput = $('<input>').attr({
+                type: 'radio',
+                class: 'form-check-input',
+                id: `faculty_${faculty._id}`, // ID único para cada radio
+                name: 'faculty', // Mismo nombre para todos los radios
+                value: faculty._id
+            });
+            const radioLabel = $('<label>')
+                .addClass('form-check-label')
+                .attr('for', `faculty_${faculty._id}`) // Hacer referencia al ID del radio
+                .text(`${faculty.name}`);
+
+            radioDiv.append(radioInput, radioLabel);
+            radioContainer.append(radioDiv);
+        });
+    }
+
+    $(document).ready(function () {
+        getDetailsByFaculties();
+    });
+</script>

@@ -3,9 +3,40 @@
         <label for="nombreSemestre" class="form-label">Nombre del Semestre</label>
         <input type="text" class="form-control" id="nombreSemestre" name="name" required>
     </div>
-    <div class="mb-3">
-        <label for="programaUniversitarioId" class="form-label">ID del Programa Universitario</label>
-        <input type="text" class="form-control" id="programaUniversitarioId" name="university_program_id" required>
+    <div id="checkboxContainer" class="mb-3">
+        <label for="descripcionFacultad" class="form-label">Programa Universitario (Carrera)</label>
     </div>
     <button type="submit" class="btn btn-primary">Agregar Semestre</button>
 </form>
+<script type="module">
+    import RepositoryAPI from './js/RepositoryAPI.js';
+    const repoAPI = new RepositoryAPI('uniPrograms');
+    $(document).ready(function () {
+        console.log("Document Ready");
+        async function getDetailsByFaculties() {
+            const response = await repoAPI.getAll();
+
+            const radioContainer = $('#checkboxContainer');
+            console.log(response.data);
+            response.data.forEach(uniProgram => {
+                const radioDiv = $('<div>').addClass('form-check'); // Cambiar el nombre a radioDiv para los radio buttons
+                const radioInput = $('<input>').attr({
+                    type: 'radio', // Cambiar el tipo a 'radio'
+                    class: 'form-check-input',
+                    id: uniProgram._id,
+                    name: 'university_program', 
+                    value: uniProgram._id
+                });
+                const radioLabel = $('<label>')
+                    .addClass('form-check-label')
+                    .attr('for', uniProgram._id)
+                    .text(`${uniProgram.name}`);
+
+                radioDiv.append(radioInput, radioLabel);
+                radioContainer.append(radioDiv);
+            });
+        }
+        getDetailsByFaculties()
+    });
+
+</script>

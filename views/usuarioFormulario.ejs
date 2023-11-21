@@ -1,3 +1,6 @@
+<div class="card-header">
+    <h3>usuario</h3>
+</div>
 <form id="formulario" class="user" action="/agregar-usuario" method="POST">
     <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
@@ -18,15 +21,41 @@
     <div class="mb-3">
         <label for="user_type" class="form-label">Tipo de Usuario</label>
         <select class="form-select" id="user_type" name="user_type" required>
+            <option value="null"> Selecciona una opcion</option>
             <option value="admin">Administrador</option>
             <option value="directorCarrera">Director de Carrera</option>
         </select>
     </div>
     <div class="mb-3">
         <label for="university_program_id" class="form-label">Programa Universitario</label>
-        <select multiple class="form-select" id="university_program_id" name="university_program_id" required>
-            <option value="ISI">ISI (Ingenieria en sistemas informaticos)</option>
+        <select class="form-select" dependency="uniProgram"  id="university_program_id" name="university_program_id" required>
+            <option value="null">Seleccione una opcion</option>
         </select>
     </div>
+
     <button type="submit" class="btn btn-primary">Agregar Usuario</button>
 </form>
+<script type="module">
+        import RepositoryAPI from './js/RepositoryAPI.js';
+
+    async function loadSectionOfSelection() {
+        const repoAPI = new RepositoryAPI();
+
+        var selectedOption = $(this).val();
+        let collection = $(this).attr('dependency');
+
+        repoAPI.setCollection("uniPrograms");
+        const response = await repoAPI.getAll();
+        const selectContainer = $("#formulario").find(`#university_program_id`);
+        selectContainer.find('option:not(:first-child)').remove();
+        response.data.forEach(campo => {
+            const option = $('<option>').attr({
+                value: campo._id
+            }).text(`${campo.name}`);
+            selectContainer.append(option);
+        });
+    }
+    $(document).ready(async function () {
+        await loadSectionOfSelection()
+    })
+</script>

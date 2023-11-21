@@ -1,14 +1,15 @@
-<form id="formulario" class="professor/avails" action="/agregar-professor-availabilities" method="POST">
-    <div class="mb-3">
+<form id="formulario" class="time/avails" action="/agregar-professor-availabilities" method="POST">
+<!--     <div class="mb-3">
         <label for="teacher_search" class="form-label">Buscar Docente</label>
         <input type="text" class="form-control" id="teacher_search" name="teacher_search"
             placeholder="Ingrese el nombre del docente" required>
         <div id="teacher_suggestions" class="suggestions"></div>
-    </div>
+    </div> -->
 
     <div class="mb-3">
         <label for="day" class="form-label">Día</label>
         <select class="form-select" id="day" name="day" required>
+            <option value="null"> Selecciona una opcion</option>
             <option value="Lunes">Lunes</option>
             <option value="Martes">Martes</option>
             <option value="Miércoles">Miércoles</option>
@@ -32,81 +33,81 @@
                 <tr>
                     <td>7:10-8:00</td>
                     <td>
-                        <input type="checkbox" name="availability[7:10-8:00]" value="true">
+                        <input type="checkbox" name="7:10-8:00" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>8:00-8:50</td>
                     <td>
-                        <input type="checkbox" name="availability[8:00-8:50]" value="true">
+                        <input type="checkbox" name="8:00-8:50" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>9:00-9:50</td>
                     <td>
-                        <input type="checkbox" name="availability[9:00-9:50]" value="true">
+                        <input type="checkbox" name="9:00-9:50" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>9:50-10:40</td>
                     <td>
-                        <input type="checkbox" name="availability[9:50-10:40]" value="true">
+                        <input type="checkbox" name="9:50-10:40" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>10:50-11:40</td>
                     <td>
-                        <input type="checkbox" name="availability[10:50-11:40]" value="true">
+                        <input type="checkbox" name="10:50-11:40" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>11:40-12:30</td>
                     <td>
-                        <input type="checkbox" name="availability[11:40-12:30]" value="true">
+                        <input type="checkbox" name="11:40-12:30" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>13:30-14:20</td>
                     <td>
-                        <input type="checkbox" name="availability[13:30-14:20]" value="true">
+                        <input type="checkbox" name="13:30-14:20" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>14:20-15:10</td>
                     <td>
-                        <input type="checkbox" name="availability[14:20-15:10]" value="true">
+                        <input type="checkbox" name="14:20-15:10" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>15:10-16:00</td>
                     <td>
-                        <input type="checkbox" name="availability[15:10-16:00]" value="true">
+                        <input type="checkbox" name="15:10-16:00" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>16:00-17:10</td>
                     <td>
-                        <input type="checkbox" name="availability[16:00-17:10]" value="true">
+                        <input type="checkbox" name="16:00-17:10" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>17:10-18:00</td>
                     <td>
-                        <input type="checkbox" name="availability[17:10-18:00]" value="true">
+                        <input type="checkbox" name="17:10-18:00" value="true">
                     </td>
                 </tr>
                 <tr>
                     <td>18:00-19:00</td>
                     <td>
-                        <input type="checkbox" name="availability[18:00-19:00]" value="true">
+                        <input type="checkbox" name="18:00-19:00" value="true">
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <button type="button" class="btn btn-secondary" id="agregarDia">Agregar Día</button>
-
+<!--     <button type="button" class="btn btn-secondary" id="agregarDia">Agregar Día</button>
+ -->
     <button type="submit" class="btn btn-primary">Definir Disponibilidad</button>
 
     <script>

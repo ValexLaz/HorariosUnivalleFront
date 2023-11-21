@@ -26,7 +26,7 @@ router.post('/register',checkNotAuthenticated, async (req, res) => {
 });
   
 router.get('/login', checkNotAuthenticated, (req, res) => {
-    res.render("login.ejs")
+    res.render("sections/login.ejs")
 })
   
 router.get('/register', checkNotAuthenticated, (req, res) => {

@@ -7,9 +7,40 @@
         <label for="descripcionFacultad" class="form-label">Descripción de la Facultad</label>
         <textarea class="form-control" id="descripcionFacultad" name="description" required></textarea>
     </div>
-    <div class="mb-3">
-        <label for="moduleId" class="form-label">ID del Módulo</label>
-        <input type="text" class="form-control" id="moduleId" name="id_module_id" required>
+    <div id="checkboxContainer" class="mb-3">
+        <label for="descripcionFacultad" class="form-label">Edificios (Modulos)</label>
     </div>
     <button type="submit" class="btn btn-primary">Agregar Facultad</button>
 </form>
+<script type="module">
+    import RepositoryAPI from './js/RepositoryAPI.js';
+    const repoAPI = new RepositoryAPI('building');
+    $(document).ready(function () {
+        console.log("Document Ready");
+        async function getDetailsByFaculties() {
+            const response = await repoAPI.getAll();
+
+            const radioContainer = $('#checkboxContainer');
+
+            response.data.forEach(building => {
+                const radioDiv = $('<div>').addClass('form-check'); // Cambiar el nombre a radioDiv para los radio buttons
+                const radioInput = $('<input>').attr({
+                    type: 'radio', // Cambiar el tipo a 'radio'
+                    class: 'form-check-input',
+                    id: building._id,
+                    name: 'building', // Cambiar el nombre a 'buildingRadio' (mismo nombre para todos)
+                    value: building._id
+                });
+                const radioLabel = $('<label>')
+                    .addClass('form-check-label')
+                    .attr('for', building._id)
+                    .text(`${building.name}`);
+
+                radioDiv.append(radioInput, radioLabel);
+                radioContainer.append(radioDiv);
+            });
+        }
+        getDetailsByFaculties()
+    });
+
+</script>

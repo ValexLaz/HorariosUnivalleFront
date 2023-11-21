@@ -1,50 +1,31 @@
-<form id="formulario" class="professor" action="/agregar-docente" method="POST">
-    <div class="mb-3">
-        <label for="name" class="form-label">Nombre del Profesor</label>
-        <input type="text" class="form-control" id="name" name="name" required>
-    </div>
-    <div class="mb-3">
-        <label for="lastname" class="form-label">Apellido del Profesor</label>
-        <input type="text" class="form-control" id="lastname" name="lastname" required>
-    </div>
-    <div class="mb-3">
-        <label for="email" class="form-label">Correo Electrónico</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-    </div>
-    <div class="mb-3">
-        <label for="cellphone_number" class="form-label">Número de Teléfono Celular</label>
-        <input type="text" class="form-control" id="cellphone_number" name="cellphone_number" required>
-    </div>
-    <div class="mb-3">
-        <label for="ci_number" class="form-label">Número de Cédula de Identidad</label>
-        <input type="text" class="form-control" id="ci_number" name="ci_number" required>
-    </div>
+<form id="formulario" class="professor/class" action="/agregar-docente" method="POST">
+
     <!-- University Program Selection -->
-<!--     <div class="mb-3">
+    <div class="mb-3">
         <label for="id_class" class="form-label">Progrmas Universitarios (Carreras)</label>
         <select class="form-select"  id="uniPrograms" dependency="semester" name="uniProgram" required>
             <option value="null">Seleccione una opcion</option>
         </select>
-    </div> -->
+    </div>
     <!-- Semester Selection (Initially Disabled) -->
-<!--     <div class="mb-3">
+    <div class="mb-3">
         <label for="id_semester" class="form-label">Semestre</label>
         <select class="form-select" id="semester" dependency="class" name="id_semester" disabled required>
             <option value="null">Seleccione una opcion</option>
         </select>
-    </div> -->
+    </div>
     <!-- Class Selection (Initially Disabled) -->
-<!--     <div class="mb-3">
+    <div class="mb-3">
         <label for="id_class" class="form-label">Clase</label>
-        <select class="form-select" id="class" name="id_class" disabled required>
+        <select class="form-select" id="class" name="class" disabled required>
             <option value="null">Seleccione una opcion</option>
         </select>
-    </div> -->
+    </div>
     <button type="submit" class="btn btn-primary">Agregar Profesor</button>
 </form>
 
 <script type="module">
-/*     import RepositoryAPI from './js/RepositoryAPI.js';
+    import RepositoryAPI from './js/RepositoryAPI.js';
     const repoAPI = new RepositoryAPI();
 
     async function getDetailsByProgramUniversity() {
@@ -61,19 +42,6 @@
 
     }
     
-    async function getDetailsBySemester() {
-        repoAPI.setCollection('classroom/types');
-        const response = await repoAPI.getAll();
-        const selectContainer = $('#id_classroom_type');
-        console.log(response.data);
-        response.data.forEach(type_classroom => {
-            const option = $('<option>').attr({
-                value: type_classroom._id
-            }).text(`${type_classroom.name}`);
-
-            selectContainer.append(option);
-        });
-    }
     async function loadSectionOfSelection(container,data) {
         $("#formulario").find(`#${container}`).prop('disabled', false);
         const selectContainer = $("#formulario").find(`#${container}`);
@@ -85,10 +53,11 @@
             selectContainer.append(option);
         });
     }
- */
-/*     $(document).ready(async function () {
+
+    $(document).ready(async function () {
         console.log("Document Ready");
 
+        await getDetailsByProgramUniversity();
 
         $('.form-select').on('change', async function () {
             var selectedOption = $(this).val();
@@ -101,5 +70,5 @@
         });
 
     });
- */
+
 </script>

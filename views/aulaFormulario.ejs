@@ -1,14 +1,12 @@
-<form id="formulario" class="classrooms" action="/agregar-aula" method="POST">
+<form id="formulario" class="classroom" action="/agregar-aula" method="POST">
     <div class="mb-3">
         <label for="code" class="form-label">Código</label>
         <input type="text" class="form-control" id="code" name="code" required>
     </div>
     <div class="mb-3">
-        <label for="id_classroom_type" class="form-label">Tipo de Aula</label>
-        <select class="form-select" id="id_classroom_type" name="id_classroom_type" required>
-            <option value="1">Aula tipo 1</option>
-            <option value="2">Aula tipo 2</option>
-            <!-- Agrega más opciones según tus necesidades -->
+        <label for="classroom_type" class="form-label">Tipo de Aula</label>
+        <select class="form-select" id="id_classroom_type" name="classroom_type" required>
+            <option value="null"> Selecciona una opcion</option>
         </select>
     </div>
     <div class="mb-3">
@@ -16,12 +14,48 @@
         <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
     </div>
     <div class="mb-3">
-        <label for="id_building" class="form-label">Edificio</label>
-        <select class="form-select" id="id_building" name="id_building" required>
-            <option value="1">Edificio 1</option>
-            <option value="2">Edificio 2</option>
-            <!-- Agrega más opciones según tus necesidades -->
+        <label for="building" class="form-label">Edificio</label>
+        <select class="form-select" id="id_building" name="building" required>
+            <option value="null"> Selecciona una opcion</option>
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Agregar Aula</button>
 </form>
+<script type="module">
+    import RepositoryAPI from './js/RepositoryAPI.js';
+    
+    async function getDetailsByBuilding() {
+        const repoAPI = new RepositoryAPI('building');
+        const response = await repoAPI.getAll();
+        const selectContainer = $('#id_building');
+        console.log(response.data);
+        response.data.forEach(building => {
+            const option = $('<option>').attr({
+                value: building._id
+            }).text(`${building.name}`);
+
+            selectContainer.append(option);
+        });
+    }
+
+    async function getDetailsByTypeClassroom(){
+        const repoAPI = new RepositoryAPI('classroom/types');
+        const response = await repoAPI.getAll();
+        const selectContainer = $('#id_classroom_type');
+        console.log(response.data);
+        response.data.forEach(type_classroom => {
+            const option = $('<option>').attr({
+                value: type_classroom._id
+            }).text(`${type_classroom.name}`);
+
+            selectContainer.append(option);
+        });
+    }
+    
+    $(document).ready(async function () {
+        console.log("Document Ready");
+        await getDetailsByTypeClassroom();
+        await getDetailsByBuilding(); 
+    });
+
+</script>

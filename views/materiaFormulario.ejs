@@ -11,14 +11,64 @@
         <label for="hours_demanded" class="form-label">Horas de Trabajo</label>
         <input type="number" class="form-control" id="hours_demanded" name="hours_demanded" required>
     </div>
+    <!-- University Program Selection -->
+    <div class="mb-3">
+        <label for="id_class" class="form-label">Progrmas Universitarios (Carreras)</label>
+        <select class="form-select" dependency="semester" id="uniPrograms" name="university_program" required>
+            <option value="null">Seleccione una opcion</option>
+        </select>
+    </div>
+     <!-- Semester Selection -->
     <div class="mb-3">
         <label for="id_semester" class="form-label">Semestre</label>
-        <select class="form-select" id="id_semester" name="id_semester" required>
-            <option value="1">Semestre 1</option>
-            <option value="2">Semestre 2</option>
-            <option value="3">Semestre 3</option>
-            <!-- Agrega más opciones según tus necesidades -->
+        <select class="form-select" id="semester" name="semester" disabled  required>
+            <option value="1">Elije un semestre</option>
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Agregar Algo</button>
 </form>
+<script type="module">
+    import RepositoryAPI from './js/RepositoryAPI.js';
+    const repoAPI = new RepositoryAPI('semester');
+
+    async function getDetailsByProgramUniversity() {
+        repoAPI.setCollection('uniPrograms')
+        const response = await repoAPI.getAll();
+        const selectContainer = $("#formulario").find("#uniPrograms");
+        console.log(response.data);
+        response.data.forEach(UniProgram => {
+            const option = $('<option>').attr({
+                value: UniProgram._id
+            }).text(`${UniProgram.name}`);
+            selectContainer.append(option);
+        });
+
+    }
+    async function loadSectionOfSelection(container,data) {
+        $("#formulario").find(`#${container}`).prop('disabled', false);
+        const selectContainer = $("#formulario").find(`#${container}`);
+        selectContainer.find('option:not(:first-child)').remove();
+        data.forEach(campo => {
+            const option = $('<option>').attr({
+                value: campo._id
+            }).text(`${campo.name}`);
+            selectContainer.append(option);
+        });
+    }
+
+    $(document).ready(async function () {
+        console.log("Document Ready");
+        await getDetailsByProgramUniversity()
+
+        $('.form-select').on('change', async function () {
+            var selectedOption = $(this).val();
+            let collection = $(this).attr('dependency');
+            let endpoint = $(this).attr('id');
+
+            repoAPI.setCollection(collection);
+            const response = await repoAPI.get(endpoint,selectedOption);
+            await loadSectionOfSelection(collection,response.data);
+        });
+    });
+
+</script>
