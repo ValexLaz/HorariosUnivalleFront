@@ -2,11 +2,10 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt")
 const passport = require("passport")
 const initializePassport  = require("../passport-config");
-initializePassport(passport, email => users.find(user => user.email === email),
-id => users.find(user => user.id === id) 
-)
-
 const users = []
+initializePassport(passport, email => users.find(user => user.email === email),
+id => users.find(user => user.id === id)
+)
 
 router.post('/register',checkNotAuthenticated, async (req, res) => {
     try{
@@ -44,7 +43,8 @@ router.post('/login', async(req,res,next)=>{
   try{
     users.push({
       id: Date.now().toString(),
-      name: req.body.name,
+      token: req.body.name,
+      typeUser:"",
       email: req.body.email,
     })
     console.log(users); 

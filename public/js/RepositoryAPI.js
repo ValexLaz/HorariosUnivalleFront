@@ -4,6 +4,7 @@ class RepositoryAPI {
     this.urlBase = "";
     this.collection = "";
     this.#generateUrlBase(collection);
+    this.axios.defaults.withCredentials = true;
   }
   #generateUrlBase(collection) {
     this.urlBase = `http://localhost:5000/api/${collection}`;

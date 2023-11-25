@@ -1,5 +1,4 @@
 const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
 const axios = require("axios");
 
 function initialize(passport, getUserByEmail, getUserById) {
@@ -14,10 +13,14 @@ function initialize(passport, getUserByEmail, getUserById) {
               password,
             }
           );
+          console.log("RESPUESTA DE LA API");
+          console.log(response.data.data);
           const token = response.data.data.token || false;
+
           if (!token) {
             return done(null, false, { message: "No user with that email" });
           }
+          Object.assign(user,response.data.data)
       
           return done(null, user);
     } catch (error) {
