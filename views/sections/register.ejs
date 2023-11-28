@@ -64,13 +64,7 @@
     color: #fff;
   }
 
-  /*   tr[id]:hover {
-    background-color: #a26bea;
-    color: white;
-  } */
 </style>
-
-
 
 <!-- Contenido principal -->
 <div id="register-parent" class="container mt-4 mb-4">
@@ -93,9 +87,6 @@
             <a href="#" class="list-group-item list-group-item-action formulario-link " id="professor">Docente</a>
 
             <% } %>
-
-
-
       </div>
     </div>
 
@@ -131,115 +122,16 @@
 
   });
 </script>
+
 <script type="module">
   //Aprox de 189 lineas  o mas antes de refactorizar
   import RepositoryAPI from './js/RepositoryAPI.js';
-
-  class TableManager {
-
-    constructor({
-      container = ""
-    }) {
-      this.container = document.getElementById(container);
-    }
-
-    static addRowToTable() {
-
-    }
-
-    generarTablaDesdeJSON({
-      jsonData = {},
-      withActionsCRUD = true,
-      returnTableHtml = false
-    } = {}) {
-      if (!jsonData || !jsonData || !Array.isArray(jsonData) || jsonData.length === 0) {
-        return "No se encontraron datos válidos.";
-      }
-      delete jsonData[0].__v;
-      let columnas = Object.keys(jsonData[0])
-      columnas = columnas.filter(elemento => elemento !== "_id");
-      let tablaHTML = '<div class="table-responsive mt-3"><table  class="table table-striped table-hover table-bordered"><thead id="table_data" ><tr>';
-
-      columnas.forEach((columna) => {
-        tablaHTML += `<th>${columna}</th>`;
-      });
-
-      if (withActionsCRUD) tablaHTML += '<th>:</th>';
-
-      jsonData.forEach((fila, index) => {
-        tablaHTML += `<tr id="${fila._id}">`;
-        columnas.forEach((columna) => {
-          tablaHTML += `<td class="editable fs-6"  contenteditable="false">${fila[columna]}</td>`; // Bootstrap 5
-        });
-        if (withActionsCRUD) {
-          tablaHTML += `<td>
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="accionesDropdown${index}" data-bs-toggle="dropdown" aria-expanded="false">
-                  :
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="accionesDropdown${index}">
-                  <li><a class="dropdown-item editar" href="#">Editar</a></li>
-                  <li><a class="dropdown-item eliminar" href="#">Eliminar</a></li>
-                  <li><a class="dropdown-item guardar" href="#">Guardar</a></li>
-                </ul>
-              </div>
-            </td>`;
-        }
-        tablaHTML += '</tr>';
-      });
-      tablaHTML += '</tbody></table>';
-      tablaHTML += '</div>';
-      if (returnTableHtml) return tablaHTML;
-      this.container.innerHTML = tablaHTML;
-    }
-
-    addRowToTable(jsonData) {
-      // Asegurarse de que jsonData sea un objeto y no un array.
-      if (typeof jsonData !== 'object' || Array.isArray(jsonData)) {
-        return "El dato proporcionado no es un objeto JSON válido.";
-      }
-
-      const $tabla = $('#table_data');
-      if ($tabla.length === 0) {
-        return "Tabla no encontrada.";
-      }
-
-      let nuevaFila = `<tr id="${jsonData._id}"> `;
-      delete jsonData._id;
-      delete jsonData.__v;
-      const columnas = Object.keys(jsonData);
-      columnas.forEach(columna => {
-        nuevaFila += `<td class="editable fs-6">${jsonData[columna]}</td>`; // Añadir las clases como en las otras filas
-      });
-
-      // Agregar la celda con el menú desplegable
-      nuevaFila += `
-        <td>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="accionesDropdown${$tabla.find('tbody tr').length}" data-bs-toggle="dropdown" aria-expanded="false">
-                  :
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="accionesDropdown${$tabla.find('tbody tr').length}">
-                    <li><a class="dropdown-item editar" href="#">Editar</a></li>
-                    <li><a class="dropdown-item eliminar" href="#">Eliminar</a></li>
-                    <li><a class="dropdown-item guardar" href="#">Guardar</a></li>
-                </ul>
-            </div>
-        </td>
-    `;
-      nuevaFila += '</tr>';
-
-      $tabla.append(nuevaFila);
-    }
-
-    deleteTable() {
-      this.container.innerHTML = " "
-    }
-
-  }
+  import Modal from './js/UI/Modal.js'
+  import Table from './js/UI/Table.js'
+  import Form from './js/UI/Form.js'
 
   const repoAPI = new RepositoryAPI();
-  const tableManager = new TableManager({
+  const tableManager = new Table({
     container: "tabla-container"
   });
   let formData = {};
@@ -247,60 +139,65 @@
   let actualRecord = {}
 
   $(document).ready(function () {
-    //Se encarga de traer los formularios(vistas) para renderizar
+
     $(document).on('click', '.formulario-link', async function (event) {
       event.preventDefault();
       var typeForm = $(this).attr("id");
-      console.log(typeForm);
       let child = $(this).attr("child");
-      $.get(`/${typeForm}Form`, { typeForm: typeForm }, function (data) {
-        $(child || "#respuesta-container").html(data);
-      });
       repoAPI.setCollection(typeForm);
+
+      $.get(`/${typeForm}Form`, { typeForm: typeForm }, function (data) {
+        const form = new Form({
+          formHtml: data,
+          group: typeForm,
+          container: child || "#respuesta-container"
+        })
+        form.initializeEventSubmit(async function (event)  {
+          event.preventDefault();
+          formData = form.generateJSONFromInputs({
+            form: this
+          });
+
+          switch (form.class) {
+            case "professor":
+              const records = await repoAPI.post({
+                name: formData.name,
+                email: formData.email,
+                ci_number: formData.ci_number
+              }, "findAllByParams")
+              
+              if (records.data.length != 0) {
+                status = 1;
+                new Modal(tableManager.generarTablaDesdeJSON({
+                  jsonData: records.data,
+                  withActionsCRUD: false,
+                  returnTableHtml: true
+                }))
+              }
+              break;
+            case "professor/class":
+              formData.professor = actualRecord._id;
+            case "time/avails":
+              formData.professor = actualRecord._id;
+            default:
+              break;
+          }
+          if (status !== 0) {
+            status = 0;
+            return;
+          };
+          const response = await repoAPI.post(formData);
+          tableManager.addRowToTable(response.data);
+        });
+        form.render();
+      });
+
       const response = await repoAPI.getAll();
-      console.log(response);
       tableManager.generarTablaDesdeJSON({
         jsonData: response.data
       });
     });
 
-    $(document).on("submit", "#formulario", async function (event) {
-      event.preventDefault();
-      formData = generateJSONFromInputs({
-        form: this
-      });
-      let formClass = $("#formulario").attr("class");
-      repoAPI.setCollection(formClass)
-      console.log("DATOS FORM");
-      console.log(formClass);
-      console.table(formData)
-      switch (formClass) {
-        case "professor":
-          const records = await repoAPI.post({
-            name: formData.name,
-            email: formData.email,
-            ci_number: formData.ci_number
-          }, "findAllByParams")
-          console.log(records.data.length);
-          if (records.data.length != 0) {
-            console.log(records);
-            status = 1;
-            showModal(tableManager.generarTablaDesdeJSON({
-              jsonData: records.data,
-              withActionsCRUD: false,
-              returnTableHtml: true
-            }))
-          }
-          break;
-        case "professor/class":
-          formData.professor = actualRecord._id;
-        case "time/avails":
-          formData.professor = actualRecord._id;
-        default:
-          break;
-      }
-      return await register();
-    });
 
     $("#tabla-container").on("click", ".editar", function (event) {
       event.preventDefault();
@@ -385,85 +282,6 @@
     });
 
   });
-
-
-  function showModal(contenido) {
-    // Crear el elemento modal
-    var modal = $('<div/>', {
-      'class': 'modal fade',
-      'id': 'miModal',
-      'tabindex': '-1',
-      'role': 'dialog',
-      'aria-labelledby': 'modalLabel',
-      'aria-hidden': 'true'
-    });
-
-    // Crear la estructura interna del modal
-    var modalDialog = $('<div/>', { 'class': 'modal-dialog', 'role': 'document' }).appendTo(modal);
-    var modalContent = $('<div/>', { 'class': 'modal-content' }).appendTo(modalDialog);
-
-    // Encabezado del modal
-    var modalHeader = $('<div/>', { 'class': 'modal-header' }).appendTo(modalContent);
-    $('<h5/>', { 'class': 'modal-title', 'id': 'modalLabel', 'text': 'Datos duplicados' }).appendTo(modalHeader);
-    $('<button/>', { 'class': 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' }).html('<span aria-hidden="true">&times;</span>').appendTo(modalHeader);
-
-    // Cuerpo del modal
-    $('<div/>', { 'class': 'modal-body', 'html': `${contenido}` }).appendTo(modalContent);
-
-    // Pie del modal
-    var modalFooter = $('<div/>', { 'class': 'modal-footer' }).appendTo(modalContent);
-    $('<button/>', { 'class': 'btn btn-secondary', 'data-dismiss': 'modal', 'text': 'Cancelar' }).appendTo(modalFooter);
-    $('<button/>', { 'class': 'btn btn-primary', 'text': 'Continuar' }).appendTo(modalFooter);
-
-    modal.appendTo('body');
-    var customWidth = '80%'; // Puedes ajustar el valor según tus necesidades (p. ej., '600px')
-    modalDialog.css('max-width', customWidth);
-    var modalDialog = $('.modal-dialog');
-    var windowHeight = $(window).height() / 2;
-    var dialogHeight = modalDialog.height() / 2;
-    var marginTop = (windowHeight - dialogHeight) / 2;
-    modalDialog.css('margin-top', marginTop);
-    modal.modal('show');
-    /*     $(window).on('resize', function () {
-          var modalDialog = $('.modal-dialog');
-          var windowHeight = $(window).height();
-          var dialogHeight = modalDialog.height();
-          var marginTop = (windowHeight - dialogHeight) / 2;
-          modalDialog.css('margin-top', marginTop);
-        }); */
-  };
-
-  function generateJSONFromInputs({
-    form = "",
-  }) {
-    var formData = {};
-    $(form).find(":input").each(function () {
-      var fieldName = $(this).attr("name");
-      var fieldType = $(this).attr("type");
-      if (fieldType === "checkbox" && !$(this).prop("checked")) {
-        return; // Ignora los checkboxes no seleccionados
-      }
-      if (fieldType === "radio" && !$(this).prop("checked")) {
-        return; // Ignora los radios no seleccionados
-      }
-      var fieldValue = $(this).val();
-      if (fieldValue) {
-        formData[fieldName] = fieldValue;
-      }
-    });
-    return formData;
-  }
-
-
-  async function register() {
-    if (status !== 0) {
-      status = 0;
-      return;
-    };
-    const response = await repoAPI.post(formData);
-    tableManager.addRowToTable(response.data);
-  }
-
 
 
 </script>

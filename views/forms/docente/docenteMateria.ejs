@@ -39,9 +39,7 @@
             }).text(`${UniProgram.name}`);
             selectContainer.append(option);
         });
-
     }
-    
     async function loadSectionOfSelection(container,data) {
         $("#formulario").find(`#${container}`).prop('disabled', false);
         const selectContainer = $("#formulario").find(`#${container}`);
