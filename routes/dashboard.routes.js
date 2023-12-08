@@ -21,5 +21,4 @@ router.get("/classroom/availsForm", (req, res) =>
   res.render("disponibilidadAulaFormulario.ejs")
 );
 
-
 module.exports = router;
