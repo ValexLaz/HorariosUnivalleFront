@@ -1,8 +1,8 @@
 class Modal {
-  constructor(contenido) {
-    this.showModal(contenido);
+  constructor(contenido,titulo = false) {
+    this.showModal(contenido,titulo);
   }
-  showModal(contenido) {
+  showModal(contenido,titulo) {
     // Crear el elemento modal
     var modal = $("<div/>", {
       class: "modal fade",
@@ -29,7 +29,7 @@ class Modal {
     $("<h5/>", {
       class: "modal-title",
       id: "modalLabel",
-      text: "Datos duplicados",
+      text:titulo || "Datos duplicados",
     }).appendTo(modalHeader);
     $("<button/>", {
       class: "close",

@@ -70,29 +70,31 @@
     } */
 </style>
 
-
-<div class="container">
+<form  id="formulario">
     <!-- Contenido principal -->
     <h2>Buscar Horarios</h2>
 
-    <!-- Carrera Dropdown -->
+    <!-- University Program Selection -->
     <div class="mb-3">
-        <label for="carreraSelect" class="form-label">Elegir Carrera:</label>
-        <select class="form-select" id="carreraSelect">
-            <!-- Opciones de carrera se cargarán dinámicamente -->
+        <label for="id_class" class="form-label">Progrmas Universitarios (Carreras)</label>
+        <select class="form-select" id="uniPrograms" dependency="semester" name="uniProgram" required>
+            <option value="null">Seleccione una opcion</option>
         </select>
     </div>
 
-    <!-- Semestre Dropdown -->
-    <div class="mb-3" id="semestreContainer">
-        <label for="semestreSelect" class="form-label">Elegir Semestre:</label>
-        <select class="form-select" id="semestreSelect">
-            <!-- Opciones de semestre se cargarán dinámicamente -->
+    <!-- Semester Selection (Initially Disabled) -->
+    <div class="mb-3">
+        <label for="id_semester" class="form-label">Semestre</label>
+        <select class="form-select" id="semester" dependency="class" name="id_semester" disabled required>
+            <option value="null">Seleccione una opcion</option>
         </select>
     </div>
 
     <!-- Botón Generar Horario -->
-    <button style="margin-bottom: 50px;" class="btn btn-primary" id="showSchedule">Mostrar Horario</button>
+    <button style="margin-bottom: 50px;" class="btn btn-primary" id="showSchedule" type="submit" >Mostrar Horario</button>
+</form>
+<div class="container">
+
 
     <div id="scheduleContainer" class="table-responsive">
         <table class="table table-bordered">
@@ -223,8 +225,104 @@
     </div>
 </div>
 
-<script>
-    // Función para poblar la tabla
+<script type="module">
+    import Form from "./js/UI/Form.js"
+    import RepositoryAPI from './js/RepositoryAPI.js';
+    import Modal from "./js/UI/Modal.js"
+    const repoAPI = new RepositoryAPI();
+
+    $(document).ready(async function (params) {
+        await getDetailsByProgramUniversity();
+        const sampleScheduleData = [
+            {
+                "_id": "5fc98a6a7a36b371a66c5f7d",
+                "dia": "Lunes",
+                "Hora_inicio": "8:00 AM",
+                "Hora_fin": "9:50 AM",
+                "mateira_docente": {
+                    "docente": {
+                        "_id": "5fc98a6a7a36b371a66c5f7f",
+                        "name": "Juan Pérez"
+                    },
+                    "materia": {
+                        "_id": "5fc98a6a7a36b371a66c5f80",
+                        "name": "Matemáticas"
+                    }
+                },
+                "classroom": {
+                    "_id": "5fc98a6a7a36b371a66c5f7e",
+                    "name": "Aula 101"
+                }
+            },
+            {
+                "_id": "5fc98a6a7a36b371a66c5f81",
+                "dia": "Miércoles",
+                "Hora_inicio": "2:20 PM",
+                "Hora_fin": "4:00 PM",
+                "mateira_docente": {
+                    "docente": {
+                        "_id": "5fc98a6a7a36b371a66c5f82",
+                        "name": "María Rodríguez"
+                    },
+                    "materia": {
+                        "_id": "5fc98a6a7a36b371a66c5f83",
+                        "name": "Historia"
+                    }
+                },
+                "classroom": {
+                    "_id": "5fc98a6a7a36b371a66c5f84",
+                    "name": "Aula 102"
+                }
+            },
+            {
+                "_id": "5fc98a6a7a36b371a66c5f85",
+                "dia": "Viernes",
+                "Hora_inicio": "10:50 AM",
+                "Hora_fin": "12:30 PM",
+                "mateira_docente": {
+                    "professor": {
+                        "_id": "5fc98a6a7a36b371a66c5f86",
+                        "name": "Carlos Gómez"
+                    },
+                    "class": {
+                        "_id": "5fc98a6a7a36b371a66c5f87",
+                        "name": "Ciencias"
+                    }
+                },
+                "classroom": {
+                    "_id": "5fc98a6a7a36b371a66c5f88",
+                    "name": "Laboratorio 1"
+                }
+            }
+        ];
+
+        $('.form-select').on('change', async function () {
+            var selectedOption = $(this).val();
+            let collection = $(this).attr('dependency');
+            let endpoint = $(this).attr('id');
+
+            repoAPI.setCollection(collection);
+            const response = await repoAPI.get(endpoint, selectedOption);
+            await loadSectionOfSelection(collection, response.data);
+        });
+
+        //BUSQUEDA DE HORARIO
+        const dataHtml =$('#formulario')[0].outerHTML;
+        const form = new Form({
+            formHtml: dataHtml
+        })
+        form.initializeEventSubmit(async function (event) {
+            event.preventDefault();
+            const formData = form.generateJSONFromInputs({
+                form: this
+            })
+            repoAPI.setCollection("schedule");
+            const response = await repoAPI.post(formData,"find");
+            console.log(response);
+            populateScheduleTable(response.data)
+        })
+    })
+
     function populateScheduleTable(scheduleData) {
         // Obtener la referencia del contenedor de la tabla
         const tableContainer = document.getElementById('scheduleContainer');
@@ -232,9 +330,9 @@
         // Iterar sobre los datos del horario
         scheduleData.forEach((schedule) => {
             // Obtener el día y las horas del horario
-            const day = schedule.dia;
-            const startTime = schedule.Hora_inicio;
-            const endTime = schedule.Hora_fin;
+            const day = schedule.day;
+            const startTime = schedule.start_time;
+            const endTime = schedule.end_time;
 
             // Obtener el índice de la fila de inicio y fin en la tabla
             const startRowIndex = getRowIndex(startTime);
@@ -244,14 +342,17 @@
             const dayCells = tableContainer.querySelectorAll(`td:nth-child(${getDayColumnIndex(day)})`);
 
             // Rellenar las celdas con la información del horario
-            for (let i = startRowIndex; i < endRowIndex; i++) {
+            for (let i = startRowIndex; i <= endRowIndex; i++) {
                 const currentCell = dayCells[i];
                 if (currentCell) {
-                    currentCell.innerHTML = `
-                Aula: ${schedule.classroom.name}<br>
-                Materia: ${schedule.mateira_docente.materia.name}<br>
-                Docente: ${schedule.mateira_docente.docente.name}
-              `;
+                    // Agregar el contenido a la celda solo si está vacía
+                    if (!currentCell.innerHTML) {
+                        currentCell.innerHTML = `
+                    Aula: ${schedule.classroom.code}<br>
+                    Materia: ${schedule.class_professor.class.name}<br>
+                    Docente: ${schedule.class_professor.professor.name}
+                `;
+                    }
                 }
             }
         });
@@ -273,93 +374,46 @@
     // Función para obtener el índice de la fila de inicio según la hora
     function getRowIndex(time) {
         const timeMapping = {
-            "7:10 AM": 1,
-            "8:00 AM": 2,
-            "8:50 AM": 3,
-            "9:00 AM": 4,
-            "9:50 AM": 5,
-            "10:40 AM": 6,
-            "10:50 AM": 7,
-            "11:40 AM": 8,
-            "12:30 PM": 9,
-            "1:30 PM": 10,
-            "2:20 PM": 11,
-            "3:10 PM": 12,
-            "4:00 PM": 13,
-            "5:10 PM": 14,
-            "6:00 PM": 15,
+            "7:10-8:00": 2,
+            "8:00-8:50": 3,
+            "9:00-9:50": 4,
+            "9:50-10:40": 5,
+            "10:50-11:40": 6,
+            "11:40-12:30": 7,
+            "13:30-14:20": 8,
+            "14:20-15:10": 9,
+            "15:10-16:00": 10,
+            "16:00-17:10": 11,
+            "17:10-18:00": 12,
+            "18:00-19:00": 13,
             // Añadir más según sea necesario
         };
         return timeMapping[time];
     }
 
-        // Manejador de eventos para el botón "Mostrar Horario"
-        document.getElementById('showSchedule').addEventListener('click', function () {
-            // Llamar a la función para poblar la tabla
-            populateScheduleTable(sampleScheduleData);
+    async function getDetailsByProgramUniversity() {
+        repoAPI.setCollection('uniPrograms')
+        const response = await repoAPI.getAll();
+        const selectContainer = $("#formulario").find("#uniPrograms");
+        console.log(response.data);
+        response.data.forEach(UniProgram => {
+            const option = $('<option>').attr({
+                value: UniProgram._id
+            }).text(`${UniProgram.name}`);
+            selectContainer.append(option);
         });
+    }
+    async function loadSectionOfSelection(container, data) {
+        $("#formulario").find(`#${container}`).prop('disabled', false);
+        const selectContainer = $("#formulario").find(`#${container}`);
+        selectContainer.find('option:not(:first-child)').remove();
+        data.forEach(campo => {
+            const option = $('<option>').attr({
+                value: campo._id
+            }).text(`${campo.name}`);
+            selectContainer.append(option);
+        });
+    }
 
-    // Suponiendo que tienes un conjunto de datos generado por la función generateWorkingDay
-    const sampleScheduleData = [
-        {
-            "_id": "5fc98a6a7a36b371a66c5f7d",
-            "dia": "Lunes",
-            "Hora_inicio": "8:00 AM",
-            "Hora_fin": "9:50 AM",
-            "mateira_docente": {
-                "docente": {
-                    "_id": "5fc98a6a7a36b371a66c5f7f",
-                    "name": "Juan Pérez"
-                },
-                "materia": {
-                    "_id": "5fc98a6a7a36b371a66c5f80",
-                    "name": "Matemáticas"
-                }
-            },
-            "classroom": {
-                "_id": "5fc98a6a7a36b371a66c5f7e",
-                "name": "Aula 101"
-            }
-        },
-        {
-            "_id": "5fc98a6a7a36b371a66c5f81",
-            "dia": "Miércoles",
-            "Hora_inicio": "2:20 PM",
-            "Hora_fin": "4:00 PM",
-            "mateira_docente": {
-                "docente": {
-                    "_id": "5fc98a6a7a36b371a66c5f82",
-                    "name": "María Rodríguez"
-                },
-                "materia": {
-                    "_id": "5fc98a6a7a36b371a66c5f83",
-                    "name": "Historia"
-                }
-            },
-            "classroom": {
-                "_id": "5fc98a6a7a36b371a66c5f84",
-                "name": "Aula 102"
-            }
-        },
-        {
-            "_id": "5fc98a6a7a36b371a66c5f85",
-            "dia": "Viernes",
-            "Hora_inicio": "10:50 AM",
-            "Hora_fin": "12:30 PM",
-            "mateira_docente": {
-                "docente": {
-                    "_id": "5fc98a6a7a36b371a66c5f86",
-                    "name": "Carlos Gómez"
-                },
-                "materia": {
-                    "_id": "5fc98a6a7a36b371a66c5f87",
-                    "name": "Ciencias"
-                }
-            },
-            "classroom": {
-                "_id": "5fc98a6a7a36b371a66c5f88",
-                "name": "Laboratorio 1"
-            }
-        }
-    ];
+
 </script>
