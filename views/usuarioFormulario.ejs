@@ -26,7 +26,8 @@
     </div>
     <div class="mb-3">
         <label for="university_program_id" class="form-label">Programa Universitario</label>
-        <select class="form-select" dependency="uniProgram"  id="university_program_id" name="university_program_id" required>
+        <select class="form-select" dependency="uniProgram" id="university_program_id" name="university_program_id"
+            required>
             <option value="null">Seleccione una opcion</option>
         </select>
     </div>
@@ -34,7 +35,7 @@
     <button type="submit" class="btn btn-primary">Agregar Usuario</button>
 </form>
 <script type="module">
-        import RepositoryAPI from './js/RepositoryAPI.js';
+    import RepositoryAPI from './js/RepositoryAPI.js';
 
     async function loadSectionOfSelection() {
         const repoAPI = new RepositoryAPI();
@@ -56,4 +57,38 @@
     $(document).ready(async function () {
         await loadSectionOfSelection()
     })
+</script>
+<script>
+    // Función para vaciar el formulario y mostrar el mensaje de guardado
+    function vaciarFormularioMostrarMensaje() {
+        // Vaciar el formulario
+        document.getElementById("formulario").reset();
+
+        // Mostrar el mensaje de guardado correctamente
+        const mensaje = document.createElement('div');
+        mensaje.textContent = 'Guardado correctamente';
+        mensaje.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 255, 0, 0.7); padding: 20px; border-radius: 8px; color: black; display: none;';
+        document.body.appendChild(mensaje);
+
+        mensaje.style.display = 'block';
+        setTimeout(function () {
+            mensaje.style.display = 'none';
+        }, 3000); // Ocultar el mensaje después de 3 segundos (ajusta según sea necesario)
+    }
+
+    // Función para ejecutar la lógica de guardado
+    function guardarDatos() {
+        // Aquí iría tu lógica de guardado, por ejemplo, una llamada a tu API o proceso de almacenamiento
+
+        // Una vez que hayas realizado tu lógica de guardado, puedes vaciar el formulario y mostrar el mensaje
+        vaciarFormularioMostrarMensaje();
+    }
+
+    // Evento que se dispara al enviar el formulario
+    document.getElementById("formulario").addEventListener("submit", function (event) {
+        event.preventDefault(); // Evitar el envío predeterminado del formulario
+
+        // Llamar a la función para guardar después de un breve retraso
+        setTimeout(guardarDatos, 100); // Ejecutar la lógica de guardado después de 100 milisegundos
+    });
 </script>

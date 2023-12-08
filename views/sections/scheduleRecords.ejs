@@ -1,0 +1,365 @@
+<style>
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
+
+    @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+        }
+    }
+
+    .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+    }
+
+    .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+    }
+
+    .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+    }
+
+    .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+    }
+
+    .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #register-parent {
+        height: auto;
+    }
+
+    .list-group-item.selected {
+        background-color: #7433c4;
+        color: #fff;
+    }
+
+    .list-group-item.selected.subItem {
+        background-color: #a26bea;
+        color: #fff;
+    }
+
+    /*   tr[id]:hover {
+      background-color: #a26bea;
+      color: white;
+    } */
+</style>
+
+
+<div class="container">
+    <!-- Contenido principal -->
+    <h2>Buscar Horarios</h2>
+
+    <!-- Carrera Dropdown -->
+    <div class="mb-3">
+        <label for="carreraSelect" class="form-label">Elegir Carrera:</label>
+        <select class="form-select" id="carreraSelect">
+            <!-- Opciones de carrera se cargarán dinámicamente -->
+        </select>
+    </div>
+
+    <!-- Semestre Dropdown -->
+    <div class="mb-3" id="semestreContainer">
+        <label for="semestreSelect" class="form-label">Elegir Semestre:</label>
+        <select class="form-select" id="semestreSelect">
+            <!-- Opciones de semestre se cargarán dinámicamente -->
+        </select>
+    </div>
+
+    <!-- Botón Generar Horario -->
+    <button style="margin-bottom: 50px;" class="btn btn-primary" id="showSchedule">Mostrar Horario</button>
+
+    <div id="scheduleContainer" class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Filas para los intervalos de tiempo -->
+                <tr id="7:10-8:00">
+                    <th scope="row">7:10-8:00</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="8:00-8:50">
+                    <th scope="row">8:00-8:50</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="9:00-9:50">
+                    <th scope="row">9:00-9:50</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="9:50-10:40">
+                    <th scope="row">9:50-10:40</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="10:50-11:40">
+                    <th scope="row">10:50-11:40</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="11:40-12:30">
+                    <th scope="row">11:40-12:30</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="13:30-14:20">
+                    <th scope="row">13:30-14:20</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="14:20-15:10">
+                    <th scope="row">14:20-15:10</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="15:10-16:00">
+                    <th scope="row">15:10-16:00</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="16:00-17:10">
+                    <th scope="row">16:00-17:10</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="17:10-18:00">
+                    <th scope="row">17:10-18:00</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <tr id="18:00-19:00">
+                    <th scope="row">18:00-19:00</th>
+                    <td id="Lunes"></td>
+                    <td id="Martes"></td>
+                    <td id="Miercoles"></td>
+                    <td id="Jueves"></td>
+                    <td id="Viernes"></td>
+                    <td id="Sabado"></td>
+                </tr>
+                <!-- Añadir más filas según sea necesario -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Función para poblar la tabla
+    function populateScheduleTable(scheduleData) {
+        // Obtener la referencia del contenedor de la tabla
+        const tableContainer = document.getElementById('scheduleContainer');
+
+        // Iterar sobre los datos del horario
+        scheduleData.forEach((schedule) => {
+            // Obtener el día y las horas del horario
+            const day = schedule.dia;
+            const startTime = schedule.Hora_inicio;
+            const endTime = schedule.Hora_fin;
+
+            // Obtener el índice de la fila de inicio y fin en la tabla
+            const startRowIndex = getRowIndex(startTime);
+            const endRowIndex = getRowIndex(endTime);
+
+            // Obtener las referencias de las celdas correspondientes al día
+            const dayCells = tableContainer.querySelectorAll(`td:nth-child(${getDayColumnIndex(day)})`);
+
+            // Rellenar las celdas con la información del horario
+            for (let i = startRowIndex; i < endRowIndex; i++) {
+                const currentCell = dayCells[i];
+                if (currentCell) {
+                    currentCell.innerHTML = `
+                Aula: ${schedule.classroom.name}<br>
+                Materia: ${schedule.mateira_docente.materia.name}<br>
+                Docente: ${schedule.mateira_docente.docente.name}
+              `;
+                }
+            }
+        });
+    }
+
+    // Función para obtener el índice de la columna correspondiente al día
+    function getDayColumnIndex(day) {
+        const dayMapping = {
+            "Lunes": 2,
+            "Martes": 3,
+            "Miércoles": 4,
+            "Jueves": 5,
+            "Viernes": 6,
+            "Sábado": 7,
+        };
+        return dayMapping[day];
+    }
+
+    // Función para obtener el índice de la fila de inicio según la hora
+    function getRowIndex(time) {
+        const timeMapping = {
+            "7:10 AM": 1,
+            "8:00 AM": 2,
+            "8:50 AM": 3,
+            "9:00 AM": 4,
+            "9:50 AM": 5,
+            "10:40 AM": 6,
+            "10:50 AM": 7,
+            "11:40 AM": 8,
+            "12:30 PM": 9,
+            "1:30 PM": 10,
+            "2:20 PM": 11,
+            "3:10 PM": 12,
+            "4:00 PM": 13,
+            "5:10 PM": 14,
+            "6:00 PM": 15,
+            // Añadir más según sea necesario
+        };
+        return timeMapping[time];
+    }
+
+        // Manejador de eventos para el botón "Mostrar Horario"
+        document.getElementById('showSchedule').addEventListener('click', function () {
+            // Llamar a la función para poblar la tabla
+            populateScheduleTable(sampleScheduleData);
+        });
+
+    // Suponiendo que tienes un conjunto de datos generado por la función generateWorkingDay
+    const sampleScheduleData = [
+        {
+            "_id": "5fc98a6a7a36b371a66c5f7d",
+            "dia": "Lunes",
+            "Hora_inicio": "8:00 AM",
+            "Hora_fin": "9:50 AM",
+            "mateira_docente": {
+                "docente": {
+                    "_id": "5fc98a6a7a36b371a66c5f7f",
+                    "name": "Juan Pérez"
+                },
+                "materia": {
+                    "_id": "5fc98a6a7a36b371a66c5f80",
+                    "name": "Matemáticas"
+                }
+            },
+            "classroom": {
+                "_id": "5fc98a6a7a36b371a66c5f7e",
+                "name": "Aula 101"
+            }
+        },
+        {
+            "_id": "5fc98a6a7a36b371a66c5f81",
+            "dia": "Miércoles",
+            "Hora_inicio": "2:20 PM",
+            "Hora_fin": "4:00 PM",
+            "mateira_docente": {
+                "docente": {
+                    "_id": "5fc98a6a7a36b371a66c5f82",
+                    "name": "María Rodríguez"
+                },
+                "materia": {
+                    "_id": "5fc98a6a7a36b371a66c5f83",
+                    "name": "Historia"
+                }
+            },
+            "classroom": {
+                "_id": "5fc98a6a7a36b371a66c5f84",
+                "name": "Aula 102"
+            }
+        },
+        {
+            "_id": "5fc98a6a7a36b371a66c5f85",
+            "dia": "Viernes",
+            "Hora_inicio": "10:50 AM",
+            "Hora_fin": "12:30 PM",
+            "mateira_docente": {
+                "docente": {
+                    "_id": "5fc98a6a7a36b371a66c5f86",
+                    "name": "Carlos Gómez"
+                },
+                "materia": {
+                    "_id": "5fc98a6a7a36b371a66c5f87",
+                    "name": "Ciencias"
+                }
+            },
+            "classroom": {
+                "_id": "5fc98a6a7a36b371a66c5f88",
+                "name": "Laboratorio 1"
+            }
+        }
+    ];
+</script>
