@@ -10,12 +10,13 @@ class Form extends Component {
     super.saveComponent(this.class, this);
   }
   render() {
-    console.log(this.formHtml);
     $(this.container).html(this.formHtml);
   }
 
   initializeEventSubmit(callback) {
-    $(document).on("submit", "#formulario",callback);
+    $(document)
+      .off("submit", "#formulario")
+      .on("submit", "#formulario", callback);
   }
 
   generateJSONFromInputs({ form = "" }) {
@@ -26,10 +27,10 @@ class Form extends Component {
         var fieldName = $(this).attr("name");
         var fieldType = $(this).attr("type");
         if (fieldType === "checkbox" && !$(this).prop("checked")) {
-          return; 
+          return;
         }
         if (fieldType === "radio" && !$(this).prop("checked")) {
-          return; 
+          return;
         }
         var fieldValue = $(this).val();
         if (fieldValue) {

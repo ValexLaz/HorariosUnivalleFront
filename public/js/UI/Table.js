@@ -5,18 +5,14 @@ class Table {
     }) {
       this.container = document.getElementById(container);
     }
-
-    static addRowToTable() {
-
-    }
-
+    
     generarTablaDesdeJSON({
       jsonData = {},
       withActionsCRUD = true,
       returnTableHtml = false
     } = {}) {
       if (!jsonData || !jsonData || !Array.isArray(jsonData) || jsonData.length === 0) {
-        return "No se encontraron datos válidos.";
+        this.container.innerHTML = "<h5>No se encontraron datos disponibles</h5>";
       }
       delete jsonData[0].__v;
       let columnas = Object.keys(jsonData[0])

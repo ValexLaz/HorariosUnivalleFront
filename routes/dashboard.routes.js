@@ -20,6 +20,7 @@ router.get("/time/availsForm", (req, res) =>
 router.get("/classroom/availsForm", (req, res) =>
   res.render("disponibilidadAulaFormulario.ejs")
 );
+router.get("/clusterForm",(req,res)=>res.render("forms/grupoFormulario.ejs"))
 
 
 module.exports = router;

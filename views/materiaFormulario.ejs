@@ -1,3 +1,4 @@
+<%- include('forms/partials/title.ejs', { titlePage:"Materia" }) %>
 <form id="formulario" class="class" action="/agregar-materia" method="POST">
     <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
@@ -10,6 +11,17 @@
     <div class="mb-3">
         <label for="hours_demanded" class="form-label">Horas de Trabajo</label>
         <input type="number" class="form-control" id="hours_demanded" name="hours_demanded" required>
+    </div>
+    <div class="mb-3">
+        <label for="hours_week" class="form-label">Horas  total a la semana</label>
+        <input type="number" class="form-control" id="hours_week" name="hours_week" required>
+    </div>
+    <!-- classroom_type selection -->
+    <div class="mb-3">
+        <label for="id_class" class="form-label">Tipo de aula</label>
+        <select class="form-select" id="classroom_type" name="classroom_type" required>
+            <option value="null">Seleccione una opcion</option>
+        </select>
     </div>
     <!-- University Program Selection -->
     <div class="mb-3">
@@ -55,11 +67,23 @@
             selectContainer.append(option);
         });
     }
+    async function getDetailsByTypesClassroom() {
+        repoAPI.setCollection('classroom/types')
+        const response = await repoAPI.getAll();
+        const selectContainer = $("#formulario").find("#classroom_type");
+        console.log(response.data);
+        response.data.forEach(classType => {
+            const option = $('<option>').attr({
+                value: classType._id
+            }).text(`${classType.name}`);
+            selectContainer.append(option);
+        });
 
+    }
     $(document).ready(async function () {
         console.log("Document Ready");
         await getDetailsByProgramUniversity()
-
+        await getDetailsByTypesClassroom();
         $('.form-select').on('change', async function () {
             var selectedOption = $(this).val();
             let collection = $(this).attr('dependency');

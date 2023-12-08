@@ -87,17 +87,17 @@
           <a href="#" class="list-group-item list-group-item-action formulario-link" id="classroom/types">Tipo Aula</a>
           <a href="#" class="list-group-item list-group-item-action formulario-link" id="building">Modulo</a>
           <a href="#" class="list-group-item list-group-item-action formulario-link" id="professor">Docente</a>
-        <% } else if(user.head_of_faculty) { %>
-          <a href="#" class="list-group-item list-group-item-action formulario-link" id="professor">Docente</a>
-        <% } %>
+          <% } else if(user.head_of_faculty) { %>
+            <a href="#" class="list-group-item list-group-item-action formulario-link" id="professor">Docente</a>
+            <% } %>
       </div>
     </div>
   </div>
-  
+
   <div class="row">
     <!-- Ejemplo de tabla -->
-    <div class="card mt-4" id="tabla-container">
-      <div class="card-body">
+    <div class="card mt-4" >
+      <div class="card-body" id="tabla-contanier">
         <h5 class="card-title"></h5>
       </div>
     </div>
@@ -116,5 +116,28 @@
       $(this).addClass('selected');
     });
 
+  });
+</script>
+<script type="module">
+  import RepositoryAPI from './js/RepositoryAPI.js';
+  import Table from './js/UI/Table.js';
+  const repoAPI = new RepositoryAPI();
+  const table = new Table({
+    container:"tabla-contanier"
+  })
+  $(document).ready(function () {
+
+    $(document).on('click', '.formulario-link', async function (event) {
+      event.preventDefault();
+      var typeForm = $(this).attr("id");
+      let child = $(this).attr("child");
+      repoAPI.setCollection(typeForm);
+
+      const response = await repoAPI.getAll();
+      table.generarTablaDesdeJSON({
+        jsonData:response.data,
+        withActionsCRUD :false,
+      })      
+    })
   });
 </script>

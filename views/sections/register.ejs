@@ -66,8 +66,7 @@
 
 </style>
 
-<!-- Contenido principal -->
-<div id="register-parent" class="container mt-4 mb-4">
+<div id="register-parent" class="container-fluid mt-4 mb-4">
   <div class="row">
     <div class="col-md-3">
       <div class="list-group">
@@ -81,7 +80,7 @@
           <a href="#" class="list-group-item list-group-item-action formulario-link " id="classroom/types">Tipo Aula</a>
           <a href="#" class="list-group-item list-group-item-action formulario-link " id="building">Modulo</a>
           <a href="#" class="list-group-item list-group-item-action formulario-link " id="professor">Docente</a>
-
+          <a href="#" class="list-group-item list-group-item-action formulario-link " id="cluster">Grupo</a>
           <% } else if(user.head_of_faculty) { %>
 
             <a href="#" class="list-group-item list-group-item-action formulario-link " id="professor">Docente</a>
@@ -208,8 +207,8 @@
       originalContent[rowIndex] = {};
       $row.find(".editable").each(function () {
         var $cell = $(this);
-        var header = $row.closest("table").find("th").eq($cell.index()).text(); // Obtener el texto del encabezado correspondiente a esta celda
-        originalContent[rowIndex][header] = $cell.html(); // Almacenar el contenido de la celda usando el texto del encabezado como clave
+        var header = $row.closest("table").find("th").eq($cell.index()).text();
+        originalContent[rowIndex][header] = $cell.html(); 
       });
       $row.find(".editable").attr("contenteditable", "true");
     });
@@ -282,6 +281,5 @@
     });
 
   });
-
-
+  
 </script>

@@ -1,0 +1,45 @@
+<div class="card-header mb-4">
+    <h3>Grupo</h3>
+</div>
+<form id="formulario" class="cluster" action="/agregar-usuario" method="POST">
+    <div class="mb-3">
+        <label for="name" class="form-label">Cantidad de estudiantes (opcional) </label>
+        <input type="number" class="form-control" id="number_students" name="number_students" required>
+    </div>
+    <div class="mb-3">
+        <label for="last_name" class="form-label">Cantidad de grupos (opcional) </label>
+        <input type="number" class="form-control" id="number_groups" name="number_groups" required>
+    </div>
+    <div class="mb-3">
+        <label for="id_semester" class="form-label">Semestre</label>
+        <select class="form-select" id="semester" name="semester"   required>
+            <option value="1">Elije un semestre</option>
+        </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Agregar Usuario</button>
+</form>
+<script type="module">
+    import RepositoryAPI from './js/RepositoryAPI.js';
+    const repoAPI = new RepositoryAPI('semester');
+
+    async function getDetailsBySemester() {
+        repoAPI.setCollection('semester')
+        const response = await repoAPI.getAll();
+        const selectContainer = $("#formulario").find("#semester");
+        console.log(response.data);
+        response.data.forEach(semester => {
+            const option = $('<option>').attr({
+                value: semester._id
+            }).text(`${semester.name}`);
+            selectContainer.append(option);
+        });
+
+    }
+    $(document).ready(async function () {
+        console.log("Document Ready");
+        await getDetailsBySemester()
+    });
+
+</script>
